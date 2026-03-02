@@ -1,0 +1,244 @@
+https://developer.android.com/guide/navigation/design/nested-graphs?hl=de
+
+package com.example.mydailydriver._del_
+
+// package com.example.tryanderror
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.outlined.AccountBox
+// import androidx.compose.material.icons.outlined.Help
+import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.example.tryanderror.ui.theme.TryAndErrorTheme
+import kotlinx.coroutines.launch
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            MaterialTheme {
+                DetailedDrawerExample { padding ->
+                    // Beispiel-Inhalt: einfache Liste
+                    Column(
+                        modifier = Modifier
+                            .padding(padding)
+                            .fillMaxSize()
+                            .padding(16.dp)
+                    ) {
+                        Text("Hauptinhalt", style = MaterialTheme.typography.titleLarge)
+                        Spacer(Modifier.height(8.dp))
+                        repeat(20) { i ->
+                            Text("Listeneintrag ${i + 1}", modifier = Modifier.padding(vertical = 4.dp))
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+fun DetailedDrawerExample(
+    content: @Composable (PaddingValues) -> Unit
+) {
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
+
+    ModalNavigationDrawer(
+        drawerContent = {
+            ModalDrawerSheet {
+                Column(
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    Spacer(Modifier.height(12.dp))
+                    Text(
+                        "Drawer Title",
+                        modifier = Modifier.padding(16.dp),
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                    Divider()
+
+                    Text(
+                        "Section 1",
+                        modifier = Modifier.padding(16.dp),
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                    NavigationDrawerItem(
+                        label = { Text("Item 1") },
+                        selected = false,
+                        onClick = { /* Handle click */ }
+                    )
+                    NavigationDrawerItem(
+                        label = { Text("Item 2") },
+                        selected = false,
+                        onClick = { /* Handle click */ }
+                    )
+
+                    Divider(modifier = Modifier.padding(vertical = 8.dp))
+
+                    Text(
+                        "Section 2",
+                        modifier = Modifier.padding(16.dp),
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                    NavigationDrawerItem(
+                        label = { Text("Settings") },
+                        selected = false,
+                        icon = { Icon(Icons.Outlined.Settings, contentDescription = null) },
+                        badge = { Text("20") },
+                        onClick = { /* Handle click */ }
+                    )
+                    NavigationDrawerItem(
+                        label = { Text("Help and feedback") },
+                        selected = false,
+                        // icon = { Icon(Icons.AutoMirrored.Outlined.Help, contentDescription = null) },
+                        icon = { Icon(Icons.Outlined.AccountBox, contentDescription = null) },
+                        onClick = { /* Handle click */ }
+                    )
+                    Spacer(Modifier.height(12.dp))
+                }
+            }
+        },
+        drawerState = drawerState
+    ) {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text("Navigation Drawer Example") },
+                    navigationIcon = {
+                        IconButton(onClick = {
+                            scope.launch {
+                                if (drawerState.isClosed) drawerState.open() else drawerState.close()
+                            }
+                        }) {
+                            Icon(Icons.Default.Menu, contentDescription = "Menu")
+                        }
+                    }
+                )
+            }
+        ) { innerPadding ->
+            content(innerPadding)
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DetailedDrawerExamplePreview(){
+    TryAndErrorTheme {
+        DetailedDrawerExample { padding ->
+        // Beispiel-Inhalt: einfache Liste
+        Column(
+            modifier = Modifier
+                .padding(padding)
+                .fillMaxSize()
+                .padding(16.dp)
+        ) {
+            Text("Hauptinhalt", style = MaterialTheme.typography.titleLarge)
+            Spacer(Modifier.height(8.dp))
+            repeat(20) { i ->
+                Text("Listeneintrag ${i + 1}", modifier = Modifier.padding(vertical = 4.dp))
+            }
+        }
+        }
+    }
+}
+
+/*
+
+Kurze, klare Erklärung der Begriffe (Jetpack Compose + Navigation + Material3 Drawer) mit Reihenfolge + Mini‑Beispiel.
+
+1) Was die Begriffe sind — knapp
+- rememberNavController
+  - Erzeugt/merkt einen NavController (Navigation-State) in Compose. Verwaltet Backstack und Navigation-Operationen (navigate/pop). Wird meist in einem Composable mit remember erstellt.
+- NavHost
+  - Bindet einen NavController an ein NavGraph: enthält die Routen/Composable-Ziele und zeigt das aktuell ausgewählte Ziel an.
+- composable (als NavGraph-Baustein)
+  - Funktion zum Registrieren eines Screens im NavHost: definiert eine Route und das zugehörige Composable UI.
+- ModalNavigationDrawer
+  - Oberstes Composable für einen modalen (überlagernden) Navigation Drawer (Material3). Umschließt die App‑Inhalte und steuert Öffnen/Schließen des Drawers.
+- drawerContent
+  - Parameter von ModalNavigationDrawer: hier definierst du die Inhalte des Drawers (z. B. Liste von NavigationDrawerItem).
+- ModalDrawerSheet
+  - Material3-Komponente, typischer Container/Sheet innerhalb von drawerContent, der visuelle Struktur/Styling für Drawer‑Inhalt liefert.
+- NavigationDrawerItem
+  - Einzelner Eintrag im Drawer (Icon, Label, selected state, onClick) — wird typischerweise für Navigation zwischen Screens genutzt.
+
+2) Reihenfolge / Regel — was kommt zuerst
+Kurz: Drawer umschließt die App‑Inhalte; NavController wird erzeugt bevor NavHost; NavHost enthält composable-Ziele. Konkrete Reihenfolge beim Aufbau:
+1. rememberNavController() — Controller erzeugen.
+2. ModalNavigationDrawer { drawerContent = { ModalDrawerSheet { NavigationDrawerItem(...) } } content = { NavHost(navController, startDestination) { composable("route"){ Screen(...) } ... } } }
+Begründung: Drawer muss die ganze UI (inkl. NavHost) umschließen, damit Drawer über/nebeneinander gerendert wird; NavController muss existieren, bevor du NavHost konfigurierst; composable-Calls registrieren die Screens im NavHost.
+
+3) Wozu sind sie da — Anwendungsfälle kurz
+- rememberNavController: zentrale Navigation steuern (z. B. navigate("details/42")).
+- NavHost + composable: deklarative Definition von Screens und deren Routen.
+- ModalNavigationDrawer + drawerContent + ModalDrawerSheet + NavigationDrawerItem: Standard‑Seitenmenü (Hamburger‑Drawer) für globales App‑Navigieren oder Einstellungen. DrawerItems triggern Navigation (über NavController) oder steuern App‑Zustand.
+
+4) Mini‑Beispiel (Material3, Compose Navigation) — kompakt (Pseudocode, Kotlin)
+```kotlin
+@Composable
+fun MyApp() {
+  val navController = rememberNavController()                      // 1
+  val drawerState = rememberDrawerState(initialValue = Closed)
+  ModalNavigationDrawer(                                           // 2 (umschließt App)
+    drawerState = drawerState,
+    drawerContent = {                                              // 3: Drawer-Inhalt
+      ModalDrawerSheet {
+        NavigationDrawerItem(
+          label = { Text("Home") },
+          selected = false,
+          onClick = {
+            // Navigation aus Drawer heraus
+            navController.navigate("home") {
+              popUpTo(navController.graph.startDestinationId) { inclusive = false }
+              launchSingleTop = true
+            }
+            // Drawer schließen (CoroutineScope erforderlich)
+          }
+        )
+        NavigationDrawerItem(
+          label = { Text("Details") },
+          selected = false,
+          onClick = { navController.navigate("details/42") }
+        )
+      }
+    }
+  ) {
+    // 4: App-Inhalt mit NavHost, nutzt den zuvor erstellten navController
+    NavHost(navController = navController, startDestination = "home") {
+      composable("home") { HomeScreen(openDrawer = { /* open drawer */ }) }
+      composable("details/{id}") { backStackEntry ->
+        val id = backStackEntry.arguments?.getString("id")
+        DetailsScreen(id)
+      }
+    }
+  }
+}
+```
+Wichtige Hinweise kurz:
+- Drawer öffnen/schließen via drawerState.toggle (CoroutineScope).
+- NavigationDrawerItem onClick sollte Drawer schließen, bevor/nachdem navigiert wird (UX).
+- Routen mit Parametern: "details/{id}" und navigate("details/42").
+- NavController sollte idealerweise auf Composition‑Scope (remember) liegen, nicht neu erstellt bei jedem Recompose.
+
+5) Typischer Flow / UX
+- User öffnet Drawer → wählt NavigationDrawerItem → item onClick: schließt Drawer + navController.navigate(...) → NavHost zeigt neues Composable (composable-Route) an.
+
+Wenn du willst, erstelle ich das gleiche Beispiel mit vollständigem Kotlin‑Code inkl. CoroutineScope zum Drawer schließen und Markierung des aktuellen Items.
+*/

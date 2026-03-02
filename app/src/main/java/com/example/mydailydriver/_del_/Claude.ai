@@ -1,0 +1,170 @@
+https://developer.android.com/develop/ui/compose/navigation?hl=de#deeplinks
+https://developer.android.com/guide/navigation/design/deep-link
+Hier ist der vollständige Umbau:
+
+---
+
+## 1. Enum anpassen
+
+```kotlin
+enum class Screens(@StringRes val title: Int) {
+    Start(title = R.string.app_name),
+    Notes(title = R.string.Notes)
+    // Notes bleibt für die Übersichtsliste
+}
+```
+
+---
+
+## 2. NavHost
+
+```kotlin
+NavHost(navController, startDestination = Screens.Start.name) {
+
+    composable(route = Screens.Start.name) {
+        StartScreen(
+            onNewNote = {
+                val id = UUID.randomUUID().toString()
+                navController.navigate("note/$id")
+            }
+        )
+    }
+
+    // Eine Route für ALLE Notizen
+    composable(route = "note/{id}") { backStackEntry ->
+        val id = backStackEntry.arguments?.getString("id") ?: return@composable
+        NoteScreen(
+            noteId = id,
+            onBack = { navController.popBackStack() }
+        )
+    }
+}
+```
+
+---
+
+## 3. NoteScreen anpassen
+
+```kotlin
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun NoteScreen(
+    noteId: String,       // ← NEU: die ID dieser Notiz
+    onBack: () -> Unit    // ← NEU: Navigation zurück
+) {
+    var title by remember { mutableStateOf("") }
+    var body by remember { mutableStateOf("") }
+
+    val bodyFocusRequester = remember { FocusRequester() }
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {},
+                navigationIcon = {
+                    IconButton(onClick = onBack) { // ← onBack statt {}
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Zurück"
+                        )
+                    }
+                },
+                actions = {
+                    TextButton(onClick = {
+                        // Hier kannst du title + body mit noteId speichern
+                        // z.B. viewModel.save(noteId, title, body)
+                    }) {
+                        Text(
+                            text = "Speichern",
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    MaterialTheme.colorScheme.background
+                )
+            )
+        }
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .padding(horizontal = 16.dp)
+        ) {
+            BasicTextField(
+                value = title,
+                onValueChange = { title = it },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                textStyle = TextStyle(
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground
+                ),
+                cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+                decorationBox = { innerTextField ->
+                    if (title.isEmpty()) {
+                        Text(
+                            text = "Titel",
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f)
+                        )
+                    }
+                    innerTextField()
+                }
+            )
+
+            HorizontalDivider(
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.1f),
+                thickness = 1.dp
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            BasicTextField(
+                value = body,
+                onValueChange = { body = it },
+                modifier = Modifier
+                    .fillMaxSize()
+                    .focusRequester(bodyFocusRequester),
+                textStyle = TextStyle(
+                    fontSize = 16.sp,
+                    lineHeight = 24.sp,
+                    color = MaterialTheme.colorScheme.onBackground
+                ),
+                cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+                decorationBox = { innerTextField ->
+                    if (body.isEmpty()) {
+                        Text(
+                            text = "Notiz beginnen …",
+                            fontSize = 16.sp,
+                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f)
+                        )
+                    }
+                    innerTextField()
+                }
+            )
+        }
+    }
+}
+```
+
+---
+
+## Was passiert jetzt?
+
+```
+Benutzer klickt "Neue Notiz"
+  → id = "a1b2-c3d4-..."  (UUID, automatisch generiert)
+  → navigate("note/a1b2-c3d4-...")
+  → NoteScreen(noteId = "a1b2-c3d4-...") öffnet sich
+
+Benutzer klickt nochmal "Neue Notiz"
+  → id = "x9y8-z7w6-..."  (neue UUID)
+  → NoteScreen(noteId = "x9y8-z7w6-...") öffnet sich
+```
+
+Jede Notiz hat ihre eigene ID — aber nur **ein** `composable`-Block in der Navigation.

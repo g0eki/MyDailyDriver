@@ -1,0 +1,43 @@
+Du hast vollkommen Recht! Da stimmt was nicht. Lass mich genauer suchen.Jetzt habe ich alles gefunden. Hier ist die klare Antwort:
+
+---
+
+## Du hast Recht — es gibt ZWEI Systeme!
+
+### ❌ Alt (String-basiert) — was ich dir gezeigt habe:
+```kotlin
+composable("note/{id}") { backStackEntry ->
+    val id = backStackEntry.arguments?.getString("id")
+}
+```
+Das String-basierte System behandelt alle Argumente wie URL-Pfade. Das ist verwirrend, fehleranfällig und wurde inzwischen von Google selbst als problematisch anerkannt.
+
+---
+
+### ✅ Neu (Type-Safe) — was Google heute empfiehlt:
+```kotlin
+@Serializable
+data class Note(val id: String)  // ← einfache Kotlin Data Class!
+
+composable<Note> { backStackEntry ->
+    val note = backStackEntry.toRoute<Note>()
+    NoteScreen(id = note.id)
+}
+
+// Navigieren:
+navController.navigate(Note(id = "abc123"))
+```
+
+Dieser Ansatz ist robuster als das Übergeben eines Route-Strings wie `composable("note/{id}")`. Die Route-Klasse definiert den Typ jedes Arguments direkt in Kotlin — kein `NavArgument` nötig. Die `toRoute()`-Methode baut das Objekt automatisch aus dem `NavBackStackEntry` zusammen.
+
+---
+
+## Warum habe ich dir das Alte gezeigt?
+
+Weil dein Code noch `enum class Screens` verwendet — das ist der alte Stil. Das `{id}` Muster gehört dazu und ist heute **überholt**.
+
+---
+
+## Soll ich deinen Code auf den neuen Type-Safe Ansatz umbauen?
+
+Das wäre sauberer, moderner und du hättest das `"note/{id}"` Problem nie wieder.
