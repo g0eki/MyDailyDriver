@@ -61,18 +61,15 @@ android {
 //    debugImplementation(libs.androidx.compose.ui.test.manifest)
 //}
 dependencies {
-
-    val fakerVersion = "1.16.0"
-
     // extern:
-    implementation("io.github.serpro69:kotlin-faker:$fakerVersion")
+    implementation(libs.kotlin.faker)
 
 
 
-    // Navigation über den Catalog (nicht mehr hart codiert!)
-    implementation("androidx.navigation:navigation-compose:2.9.7")
-    implementation("androidx.datastore:datastore-preferences:1.2.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0")
+    // Navigation, DataStore & Serialization über Catalog
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
