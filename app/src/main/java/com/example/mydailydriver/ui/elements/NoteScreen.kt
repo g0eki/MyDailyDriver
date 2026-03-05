@@ -15,11 +15,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.mydailydriver.ui.MyDailyDriverViewModel
 import com.example.mydailydriver.ui.theme.MyDailyDriverTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NoteScreen() {
+// Das ist zustand-Behaftet und Zustandlos! muss es Trennen
+fun NoteScreen(viewModel: MyDailyDriverViewModel) {
     var title by remember { mutableStateOf("") }
     var body by remember { mutableStateOf("") }
 
@@ -38,7 +40,7 @@ fun NoteScreen() {
                     }
                 },
                 actions = {
-                    TextButton(onClick = { /* Speichern */ }) {
+                    TextButton(onClick = { viewModel.addNote(newTitel = title, newNote = body) }) {
                         Text(
                             text = "Speichern",
                             fontWeight = FontWeight.SemiBold
@@ -122,6 +124,6 @@ fun NoteScreen() {
 @Composable
 fun NoteScreenPreview() {
     MyDailyDriverTheme{
-        NoteScreen()
+        //NoteScreen()
     }
 }

@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+    kotlin("plugin.serialization") version "1.9.10"
 }
 
 android {
@@ -60,8 +61,18 @@ android {
 //    debugImplementation(libs.androidx.compose.ui.test.manifest)
 //}
 dependencies {
+
+    val fakerVersion = "1.16.0"
+
+    // extern:
+    implementation("io.github.serpro69:kotlin-faker:$fakerVersion")
+
+
+
     // Navigation über den Catalog (nicht mehr hart codiert!)
     implementation("androidx.navigation:navigation-compose:2.9.7")
+    implementation("androidx.datastore:datastore-preferences:1.2.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

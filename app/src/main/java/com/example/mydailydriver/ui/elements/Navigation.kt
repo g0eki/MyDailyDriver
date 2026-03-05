@@ -1,21 +1,17 @@
 package com.example.mydailydriver.ui.elements
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.Navigation
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.mydailydriver.ui.MyDailyDriverViewModel
+import com.example.mydailydriver.ui.elements.home.HomeScreen
 
 @Composable
 // fun Navigation(viewModel: MovieMakerViewModel = viewModel()) {
@@ -35,7 +31,7 @@ import androidx.navigation.compose.rememberNavController
 //    }
 //}
 
-fun Navigation() {
+fun Navigation(viewModel: MyDailyDriverViewModel = viewModel()) {
     val navController = rememberNavController()
 
     ModalNavigationDrawer(
@@ -50,11 +46,14 @@ fun Navigation() {
             startDestination = Screens.Start.name,
             modifier = Modifier) {
             composable(route= Screens.Start.name) {
-                MainScreen()
+                HomeScreen(
+                    viewModel,
+                    onAddNote = {navController.navigate(route= Screens.Notes.name)}
+                )
             }
 
             composable(route= Screens.Notes.name) {
-                NoteScreen()
+                NoteScreen(viewModel)
                 // Oder eine Neue Notiz soll ein Screen sein
             }
         }
