@@ -11,7 +11,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.example.mydailydriver.ui.MyDailyDriverViewModel
-import com.example.mydailydriver.ui.elements.property.Screens
+import com.example.mydailydriver.ui.elements.components.Screens
 
 @Composable
 fun Navigation(viewModel: MyDailyDriverViewModel = viewModel()) {

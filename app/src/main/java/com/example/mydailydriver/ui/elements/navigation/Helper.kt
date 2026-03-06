@@ -18,7 +18,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.example.mydailydriver.ui.MyDailyDriverViewModel
 import com.example.mydailydriver.ui.elements.EditScreen
-import com.example.mydailydriver.ui.elements.property.Screens
+import com.example.mydailydriver.ui.elements.components.Screens
 import com.example.mydailydriver.ui.elements.home.HomeScreen
 
 // 1. Kein @Composable hier!

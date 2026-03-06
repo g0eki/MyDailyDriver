@@ -1,4 +1,4 @@
-package com.example.mydailydriver.ui.elements.property
+package com.example.mydailydriver.ui.elements.components
 
 import androidx.annotation.StringRes
 import com.example.mydailydriver.R

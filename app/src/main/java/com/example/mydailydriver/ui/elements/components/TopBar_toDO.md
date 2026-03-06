@@ -98,3 +98,73 @@ Scaffold(
 
 **Wo speichern?**
 Am besten in einer neuen Datei z.B. `CommonComponents.kt` oder `AppTopBar.kt` – Komponenten die **mehrere Screens teilen**. 🎯
+
+
+# --- 5
+
+Gar kein Problem! Das ist tatsächlich der beste und sauberste Weg, um flexibel mehrere Icons (Actions) in einer TopBar darzustellen.
+
+Um mehrere Eigenschaften wie das Icon, die Beschreibung und die Klick-Aktion zu bündeln, erstellst du am besten eine kleine Datenklasse (`data class`).
+
+Hier ist die Umsetzung:
+
+### 1. Die Datenklasse erstellen
+
+Diese Klasse hält alle Informationen, die ein einzelner Button in deiner TopBar braucht.
+
+```kotlin
+import androidx.compose.ui.graphics.vector.ImageVector
+
+data class TopBarAction(
+    val imageVector: ImageVector,
+    val contentDescription: String?, // String? erlaubt null, falls ein Icon rein dekorativ ist
+    val onClick: () -> Unit
+)
+
+```
+
+---
+
+### 2. Die CustomTopBar anpassen
+
+Jetzt änderst du den Parameter in deiner TopBar so, dass er eine Liste dieser neuen Datenklasse erwartet. Ich habe den Parameternamen von `onSave` zu `actions` geändert, da das semantisch besser passt, wenn es verschiedene Icons sein können.
+
+```kotlin
+import androidx.compose.runtime.Composable
+
+@Composable
+fun CustomTopBar(
+    onBack: () -> Unit,
+    actions: List<TopBarAction>? = null  // Liste von Aktionen oder null
+) {
+    // Hier kommt dein TopBar-Code hin...
+}
+
+```
+
+---
+
+### 3. So rufst du die TopBar dann auf
+
+Wenn du den Screen aufrufst, kannst du die Liste nun ganz bequem übergeben:
+
+```kotlin
+CustomTopBar(
+    onBack = { /* Zurück navigieren */ },
+    actions = listOf(
+        TopBarAction(
+            imageVector = Icons.Default.Edit,
+            contentDescription = "Bearbeiten",
+            onClick = { /* Bearbeiten Logik */ }
+        ),
+        TopBarAction(
+            imageVector = Icons.Default.Check,
+            contentDescription = "Speichern",
+            onClick = { /* Speichern Logik */ }
+        )
+    )
+)
+
+```
+
+Möchtest du, dass ich dir auch direkt zeige, wie du diese `actions`-Liste innerhalb des Composables (z. B. im `actions`-Block einer Material 3 `TopAppBar`) mit einer Schleife durchgehst und als klickbare `IconButton`s auf den Bildschirm zeichnest?
