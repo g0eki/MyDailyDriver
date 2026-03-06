@@ -21,9 +21,10 @@ import com.example.mydailydriver.ui.theme.MyDailyDriverTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 // Das ist zustand-Behaftet und Zustandlos! muss es Trennen
-fun NoteScreen(viewModel: MyDailyDriverViewModel) {
+fun EditScreen(viewModel: MyDailyDriverViewModel,
+               onNoteSaved: () -> Unit) {
     var title by remember { mutableStateOf("") }
-    var body by remember { mutableStateOf("") }
+    var content by remember { mutableStateOf("") }
 
     val bodyFocusRequester = remember { FocusRequester() }
 
@@ -32,7 +33,7 @@ fun NoteScreen(viewModel: MyDailyDriverViewModel) {
             TopAppBar(
                 title = {},
                 navigationIcon = {
-                    IconButton(onClick = { /* Navigation zurück */ }) {
+                    IconButton(onClick = { onNoteSaved() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Zurück"
@@ -40,7 +41,8 @@ fun NoteScreen(viewModel: MyDailyDriverViewModel) {
                     }
                 },
                 actions = {
-                    TextButton(onClick = { viewModel.addNote(newTitel = title, newNote = body) }) {
+                    TextButton(onClick = { viewModel.addNote(newTitel = title, newNote = content)
+                                            onNoteSaved()}) {
                         Text(
                             text = "Speichern",
                             fontWeight = FontWeight.SemiBold
@@ -94,8 +96,8 @@ fun NoteScreen(viewModel: MyDailyDriverViewModel) {
 
             // Notiztext
             BasicTextField(
-                value = body,
-                onValueChange = { body = it },
+                value = content,
+                onValueChange = { content = it },
                 modifier = Modifier
                     .fillMaxSize()
                     .focusRequester(bodyFocusRequester),
@@ -106,7 +108,7 @@ fun NoteScreen(viewModel: MyDailyDriverViewModel) {
                 ),
                 cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
                 decorationBox = { innerTextField ->
-                    if (body.isEmpty()) {
+                    if (content.isEmpty()) {
                         Text(
                             text = "Notiz beginnen …",
                             fontSize = 16.sp,
@@ -124,6 +126,6 @@ fun NoteScreen(viewModel: MyDailyDriverViewModel) {
 @Composable
 fun NoteScreenPreview() {
     MyDailyDriverTheme{
-        //NoteScreen()
+       // NoteScreen()
     }
 }

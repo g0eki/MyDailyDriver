@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">MyDailyDriver</string>
-    <string name="Notes">My Notes</string>
+    <string name="edit_notes">edit Notes</string>
     <string name="back_button">Back</string>
     <plurals name="cupcakes">
         <item quantity="one">%d cupcake</item>

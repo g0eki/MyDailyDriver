@@ -1,4 +1,4 @@
-package com.example.mydailydriver.ui.elements
+package com.example.mydailydriver.ui.elements.property
 
 import androidx.annotation.StringRes
 import com.example.mydailydriver.R
@@ -6,5 +6,5 @@ import com.example.mydailydriver.R
 // enum class Screens(@StringRes val title: Int) {
 enum class Screens(@get:StringRes val title: Int) {
     Start(title = R.string.app_name),
-    Notes(title = R.string.Notes)
+    Notes(title = R.string.edit_notes),
 }

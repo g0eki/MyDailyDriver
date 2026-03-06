@@ -1,6 +1,9 @@
 package com.example.mydailydriver.ui.elements.home
 
 class HomeViewModel {
+    //TODO()
+
+    // TODO()
 }
 
 
@@ -47,3 +50,4 @@ class InventoryApplication : Application() {
 }
 
 * */
+
