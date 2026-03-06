@@ -24,13 +24,13 @@ data class TopBarAction(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomTopBar(
-    // viewModel: MyDailyDriverViewModel, // fur Zustandbehaftet
+    // viewModel: MyDailyDriverViewModel, // fur Zustandsbehaftet
     titel: String,
     onBack: (() -> Unit)? = null,
     barActions: List<TopBarAction>? = null  // Liste von Aktionen oder null
 ) {
     /*
-    // fur Zustandbehaftet
+    // fur Zustandsbehaftet
     var title by remember { mutableStateOf("") }
     var body by remember { mutableStateOf("") }
      */
@@ -49,8 +49,9 @@ fun TopBarStateless(
     onBack: (() -> Unit)? = null,
     barActions: List<TopBarAction>? = null  // Liste von Aktionen oder null
 ) {
-    TopAppBar(
-        title = { Text(titel, modifier=Modifier.Mittig, style = MaterialTheme.typography.titleLarge) },
+    // TopAppBar(
+    CenterAlignedTopAppBar(
+        title = { Text(titel, modifier=Modifier, style = MaterialTheme.typography.titleLarge) },
         navigationIcon = {
             if (onBack != null) {
                 IconButton(onClick = { onBack() }) {
@@ -73,7 +74,8 @@ fun TopBarStateless(
                 }
             }
         },
-        colors = TopAppBarDefaults.topAppBarColors(
+        // colors = TopAppBarDefaults.topAppBarColors(
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
             MaterialTheme.colorScheme.background
         )
     )

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -19,6 +20,7 @@ import androidx.navigation.compose.composable
 import com.example.mydailydriver.ui.MyDailyDriverViewModel
 import com.example.mydailydriver.ui.elements.EditScreen
 import com.example.mydailydriver.ui.elements.components.Screens
+import com.example.mydailydriver.ui.elements.components.TopBarAction
 import com.example.mydailydriver.ui.elements.home.HomeScreen
 
 // 1. Kein @Composable hier!
@@ -73,9 +75,33 @@ internal class NavigationHelper(
         }
 
         composable(route = Screens.Notes.name) {
+            val canGoBack = navController.previousBackStackEntry != null
+
+//            val barActions = listOf<TopBarAction>(
+//                TopBarAction(
+//                    imageVector = Icons.Default.Edit,
+//                    contentDescription = "Bearbeiten",
+//                    onClick = {
+//                        /* Bearbeiten Logik */
+//                        TODO()
+//                    }
+//                ),
+//                TopBarAction(
+//                    imageVector = Icons.Default.Save,
+//                    contentDescription = "Speichern",
+//                    onClick = { /* Bearbeiten Logik */ }
+//                ),
+//            )
+
+
             EditScreen(
                 viewModel = viewModel,
-                onNoteSaved = { navController.popBackStack() }
+                onBack = {
+                    if (canGoBack) {
+                        navController.popBackStack()
+                    } else {null}
+                },
+                // onEditActions = barActions
             )
         }
     }

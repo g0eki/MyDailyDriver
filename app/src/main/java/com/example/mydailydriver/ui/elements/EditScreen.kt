@@ -1,11 +1,14 @@
 package com.example.mydailydriver.ui.elements
 
+import android.health.connect.datatypes.BodyFatRecord
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -16,42 +19,92 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mydailydriver.ui.MyDailyDriverViewModel
+import com.example.mydailydriver.ui.elements.components.CustomTopBar
+import com.example.mydailydriver.ui.elements.components.TopBarAction
 import com.example.mydailydriver.ui.theme.MyDailyDriverTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 // Das ist zustand-Behaftet und Zustandlos! muss es Trennen
-fun EditScreen(viewModel: MyDailyDriverViewModel,
-               onNoteSaved: () -> Unit) {
+fun EditScreen(
+    viewModel: MyDailyDriverViewModel,
+    onBack: (() -> Unit)? = null,
+    // onEditActions: List<TopBarAction>? = null
+) {
     var title by remember { mutableStateOf("") }
     var content by remember { mutableStateOf("") }
 
     val bodyFocusRequester = remember { FocusRequester() }
 
+    val barActions = listOf<TopBarAction>(
+        TopBarAction(
+            imageVector = Icons.Default.Edit,
+            contentDescription = "Bearbeiten",
+            onClick = {
+                /* Bearbeiten Logik */
+                TODO()
+            }
+        ),
+        TopBarAction(
+            imageVector = Icons.Default.Save,
+            contentDescription = "Speichern",
+            onClick = {
+                viewModel.addNote(newTitel = title, newNote = content)
+//                if (onBack != null) {
+//                    onBack()
+//                }
+            }
+        ),
+    )
+
+    // Aufruf der zustandslosen UI
+    EditContent(
+        onBack = onBack,
+        title = title,
+        content = content,
+        barActions = barActions,
+        bodyFocusRequester = bodyFocusRequester
+    )
+
+}
+
+@Composable
+fun EditContent(
+    onBack: (() -> Unit)? = null,
+    title: String,
+    content: String,
+    barActions: List<TopBarAction>,
+    bodyFocusRequester: FocusRequester
+) {
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {},
-                navigationIcon = {
-                    IconButton(onClick = { onNoteSaved() }) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Zurück"
-                        )
-                    }
-                },
-                actions = {
-                    TextButton(onClick = { viewModel.addNote(newTitel = title, newNote = content)
-                                            onNoteSaved()}) {
-                        Text(
-                            text = "Speichern",
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    MaterialTheme.colorScheme.background
-                )
+//            TopAppBar(
+//                title = {},
+//                navigationIcon = {
+//                    IconButton(onClick = { onNoteSaved() }) {
+//                        Icon(
+//                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+//                            contentDescription = "Zurück"
+//                        )
+//                    }
+//                },
+//                actions = {
+//                    TextButton(onClick = { viewModel.addNote(newTitel = title, newNote = content)
+//                                            onNoteSaved()}) {
+//                        Text(
+//                            text = "Speichern",
+//                            fontWeight = FontWeight.SemiBold
+//                        )
+//                    }
+//                },
+//                colors = TopAppBarDefaults.topAppBarColors(
+//                    MaterialTheme.colorScheme.background
+//                )
+//            )
+            CustomTopBar(
+                titel = title,
+                onBack = onBack,
+                barActions = barActions
             )
         }
     ) { innerPadding ->
@@ -121,11 +174,37 @@ fun EditScreen(viewModel: MyDailyDriverViewModel,
         }
     }
 }
+}
 
 @Preview(showBackground = true)
 @Composable
-fun NoteScreenPreview() {
+fun EditScreenPreview() {
+
+    val bodyFocusRequester = remember { FocusRequester() }
+    val barActions = listOf<TopBarAction>(
+        TopBarAction(
+            imageVector = Icons.Default.Edit,
+            contentDescription = "Bearbeiten",
+            onClick = {
+                /* Bearbeiten Logik */
+                TODO()
+            }
+        ),
+        TopBarAction(
+            imageVector = Icons.Default.Save,
+            contentDescription = "Speichern",
+            onClick = { }
+        ),
+    )
+
+
     MyDailyDriverTheme{
-       // NoteScreen()
+        EditContent(
+            onBack = null,
+            title = "TestTitel",
+            content = "Test Content",
+            barActions = barActions,
+            bodyFocusRequester = bodyFocusRequester
+            )
     }
 }

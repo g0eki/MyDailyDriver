@@ -17,6 +17,7 @@ import com.example.mydailydriver.ui.MyDailyDriverViewModel
 import com.example.mydailydriver.ui.theme.MyDailyDriverTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import com.example.mydailydriver.ui.elements.components.CustomTopBar
 
 // ✅ Zustandsbehaftet – kennt das ViewModel
 @Composable
@@ -32,7 +33,10 @@ fun HomeScreen(viewModel: MyDailyDriverViewModel,  onAddNote: () -> Unit) {
 fun HomeContent(notes: List<Note>,
                 onAddNote: () -> Unit) {
     Scaffold(
-        topBar = { TopAppBar(title = { Text("My Daily Driver") }) },
+        // topBar = { TopAppBar(title = { Text("My Daily Driver") }) },
+        topBar = {
+            CustomTopBar(titel = "My Daily Driver")
+        },
         floatingActionButton = {
             FloatingActionButton(onClick = onAddNote) {  Icon(Icons.Filled.Add, "Notiz hinzufügen") }
         }
