@@ -12,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -31,6 +32,7 @@ fun EditScreen(
     onBack: (() -> Unit)? = null,
     // onEditActions: List<TopBarAction>? = null
 ) {
+    // alles mit var, remember, mutableStateOf() etc. ZustaEnde ,
     var title by remember { mutableStateOf("") }
     var content by remember { mutableStateOf("") }
 
@@ -61,46 +63,29 @@ fun EditScreen(
     EditContent(
         onBack = onBack,
         title = title,
+        onTitelChange = { title = it },
         content = content,
+        onContentChange = {content = it},
         barActions = barActions,
         bodyFocusRequester = bodyFocusRequester
     )
 
 }
 
+// zustandslosen UI - Elemente die nicht Zustände sind
+// @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditContent(
     onBack: (() -> Unit)? = null,
     title: String,
+    onTitelChange: (String) -> Unit = {_ ->},  // explizit ignoriert
     content: String,
+    onContentChange: (String) -> Unit = {},  // implizit ignoriert – Kurzschreibweise
     barActions: List<TopBarAction>,
     bodyFocusRequester: FocusRequester
 ) {
     Scaffold(
         topBar = {
-//            TopAppBar(
-//                title = {},
-//                navigationIcon = {
-//                    IconButton(onClick = { onNoteSaved() }) {
-//                        Icon(
-//                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-//                            contentDescription = "Zurück"
-//                        )
-//                    }
-//                },
-//                actions = {
-//                    TextButton(onClick = { viewModel.addNote(newTitel = title, newNote = content)
-//                                            onNoteSaved()}) {
-//                        Text(
-//                            text = "Speichern",
-//                            fontWeight = FontWeight.SemiBold
-//                        )
-//                    }
-//                },
-//                colors = TopAppBarDefaults.topAppBarColors(
-//                    MaterialTheme.colorScheme.background
-//                )
-//            )
             CustomTopBar(
                 titel = title,
                 onBack = onBack,
@@ -117,7 +102,7 @@ fun EditContent(
             // Titel
             BasicTextField(
                 value = title,
-                onValueChange = { title = it },
+                onValueChange = onTitelChange,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp),
@@ -150,7 +135,7 @@ fun EditContent(
             // Notiztext
             BasicTextField(
                 value = content,
-                onValueChange = { content = it },
+                onValueChange = { onContentChange(it) },
                 modifier = Modifier
                     .fillMaxSize()
                     .focusRequester(bodyFocusRequester),
@@ -174,7 +159,36 @@ fun EditContent(
         }
     }
 }
+
+@Composable
+fun CustomTextField(
+    value: String,
+    onValueChange: (String) -> Unit = {},
+    placeholder: String,
+    modifier: Modifier,
+    textStyle: TextStyle,
+    cursorBrush: Brush,
+    )
+{
+    BasicTextField(
+        value = value,
+        onValueChange = onValueChange,
+        modifier = modifier,
+        textStyle = textStyle,
+        cursorBrush = cursorBrush,
+        decorationBox = { innerTextField ->
+            if (value.isEmpty()) {
+                Text(
+                    text = placeholder,
+                    style = textStyle.copy(
+                        color = textStyle.color.copy(alpha = 0.4f)
+                    ),)
+            }
+            innerTextField()
+        }
+    )
 }
+
 
 @Preview(showBackground = true)
 @Composable
@@ -200,9 +214,11 @@ fun EditScreenPreview() {
 
     MyDailyDriverTheme{
         EditContent(
-            onBack = null,
+            onBack = {  },
             title = "TestTitel",
+            // onTitelChange = ,
             content = "Test Content",
+            // onContentChange = ,
             barActions = barActions,
             bodyFocusRequester = bodyFocusRequester
             )
