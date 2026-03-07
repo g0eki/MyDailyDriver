@@ -1,4 +1,4 @@
-package com.example.mydailydriver.ui.elements
+package com.example.mydailydriver.ui.elements.edit
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
@@ -92,69 +92,77 @@ fun EditContent(
             )
         }
     ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .padding(horizontal = 16.dp)
-        ) {
-            // Titel
-            BasicTextField(
-                value = title,
-                onValueChange = onTitelChange,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp),
-                textStyle = TextStyle(
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground
-                ),
-                cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
-                decorationBox = { innerTextField ->
-                    if (title.isEmpty()) {
-                        Text(
-                            text = "Titel",
-                            fontSize = 24.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f)
-                        )
-                    }
-                    innerTextField()
-                }
-            )
-
-            HorizontalDivider(
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.1f),
-                thickness = 1.dp
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Notiztext
-            BasicTextField(
-                value = content,
-                onValueChange = { onContentChange(it) },
+        // Trailing Lambda Syntax
+        Surface{
+            Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .focusRequester(bodyFocusRequester),
-                textStyle = TextStyle(
-                    fontSize = 16.sp,
-                    lineHeight = 24.sp,
-                    color = MaterialTheme.colorScheme.onBackground
-                ),
-                cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
-                decorationBox = { innerTextField ->
-                    if (content.isEmpty()) {
-                        Text(
-                            text = "Notiz beginnen …",
-                            fontSize = 16.sp,
-                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f)
-                        )
+                    .padding(innerPadding)
+                    .padding(horizontal = 16.dp)
+            ) {
+                // Also ich kann noch Surface(....) { BasicTextField(...) ... } Aufrufen
+                // Titel
+                BasicTextField(
+                    value = title,
+                    onValueChange = onTitelChange,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                    textStyle = TextStyle(
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onBackground
+                    ),
+                    cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+                    decorationBox = { innerTextField ->
+                        if (title.isEmpty()) {
+                            Text(
+                                text = "Titel",
+                                fontSize = 24.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f)
+                            )
+                        }
+                        innerTextField()
                     }
-                    innerTextField()
+                )
+
+                HorizontalDivider(
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.1f),
+                    thickness = 1.dp
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                // Notiztext
+                Surface() {
+                    BasicTextField(
+                        value = content,
+                        onValueChange = { onContentChange(it) },
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .focusRequester(bodyFocusRequester),
+                        textStyle = TextStyle(
+                            fontSize = 16.sp,
+                            lineHeight = 24.sp,
+                            color = MaterialTheme.colorScheme.onBackground
+                        ),
+                        cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+                        decorationBox = { innerTextField ->
+                            if (content.isEmpty()) {
+                                Text(
+                                    text = "Notiz beginnen …",
+                                    fontSize = 16.sp,
+                                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f)
+                                )
+                            }
+                            innerTextField()
+                        }
+                    )
                 }
-            )
+
+        }
+
         }
     }
 }

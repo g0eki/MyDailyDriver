@@ -1,15 +1,17 @@
 package com.example.mydailydriver.ui.elements.components
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Save
-import androidx.compose.material3.*
+import androidx.compose.material3.Text
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.material.icons.automirrored.filled.*
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -49,12 +51,13 @@ fun TopBarStateless(
     onBack: (() -> Unit)? = null,
     barActions: List<TopBarAction>? = null  // Liste von Aktionen oder null
 ) {
+
     // TopAppBar(
     CenterAlignedTopAppBar(
         title = { Text(titel, modifier=Modifier, style = MaterialTheme.typography.titleLarge) },
         navigationIcon = {
             if (onBack != null) {
-                IconButton(onClick = { onBack() }) {
+                IconButton(onClick = { onBack.invoke() }) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "Zurück"
@@ -74,9 +77,8 @@ fun TopBarStateless(
                 }
             }
         },
-        // colors = TopAppBarDefaults.topAppBarColors(
-        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-            MaterialTheme.colorScheme.background
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.background
         )
     )
 
