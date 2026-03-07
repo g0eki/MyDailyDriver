@@ -1,6 +1,5 @@
 package com.example.mydailydriver.ui.elements
 
-import android.health.connect.datatypes.BodyFatRecord
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
@@ -32,7 +31,7 @@ fun EditScreen(
     onBack: (() -> Unit)? = null,
     // onEditActions: List<TopBarAction>? = null
 ) {
-    // alles mit var, remember, mutableStateOf() etc. ZustaEnde ,
+    // alles mit var, remember, mutableStateOf() etc. ZustazEnde ,
     var title by remember { mutableStateOf("") }
     var content by remember { mutableStateOf("") }
 

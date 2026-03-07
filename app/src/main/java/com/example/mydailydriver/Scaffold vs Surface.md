@@ -203,7 +203,7 @@ Das Scaffold ist das „Skelett“ eines Bildschirms. Es kümmert sich nicht um 
 * Wichtige Slots: topBar, bottomBar, floatingActionButton.
 * Die Padding-Logik: Das Scaffold berechnet automatisch, wie viel Platz die Bars einnehmen. Diesen Wert gibt es als innerPadding an dich weiter. Ohne die Verwendung dieses Paddings würde dein Inhalt unter der TopBar verschwinden.
 
-2. Surface: Die visuelle Material-Ebene
+1. Surface: Die visuelle Material-Ebene
    Die Surface ist die „physische Komponente“. Während das Scaffold nur Plätze reserviert, sorgt die Surface für Farben und Ebenen.
 
 * Content Color: Nur Surface stellt sicher, dass Text auf einem dunklen Hintergrund automatisch hell ist.
