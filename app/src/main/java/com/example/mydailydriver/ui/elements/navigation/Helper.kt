@@ -16,14 +16,12 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.example.mydailydriver.ui.MyDailyDriverViewModel
 import com.example.mydailydriver.ui.elements.edit.EditScreen
 import com.example.mydailydriver.ui.elements.components.Screens
 import com.example.mydailydriver.ui.elements.home.HomeScreen
 
 // 1. Kein @Composable hier!
 internal class NavigationHelper(
-    val viewModel: MyDailyDriverViewModel,
     val navController: NavController
 ) {
     @Composable
