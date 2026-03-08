@@ -17,7 +17,6 @@ import com.example.mydailydriver.ui.elements.components.Screens
 fun Navigation(viewModel: MyDailyDriverViewModel = viewModel()) {
     val navController = rememberNavController()
     val nav = NavigationHelper(
-                    viewModel=viewModel,
                     navController=navController)
 
     ModalNavigationDrawer(
