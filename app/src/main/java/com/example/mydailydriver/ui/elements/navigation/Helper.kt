@@ -67,7 +67,6 @@ internal class NavigationHelper(
     fun NavGraphBuilder.navHostContent() {
         composable(route = Screens.Start.name) {
             HomeScreen(
-                viewModel,
                 onAddNote = { navController.navigate(route = Screens.Notes.name) }
             )
         }
@@ -91,9 +90,7 @@ internal class NavigationHelper(
 //                ),
 //            )
 
-
             EditScreen(
-                viewModel = viewModel,
                 onBack = {
                     if (canGoBack) {
                         navController.popBackStack()

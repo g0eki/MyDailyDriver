@@ -18,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mydailydriver.ui.MyDailyDriverViewModel
 import com.example.mydailydriver.ui.elements.components.CustomTopBar
 import com.example.mydailydriver.ui.elements.components.TopBarAction
@@ -27,7 +28,7 @@ import com.example.mydailydriver.ui.theme.MyDailyDriverTheme
 @Composable
 // Das ist zustand-Behaftet und Zustandlos! muss es Trennen
 fun EditScreen(
-    viewModel: MyDailyDriverViewModel,
+    viewModel: MyDailyDriverViewModel = viewModel(),
     onBack: (() -> Unit)? = null,
     // onEditActions: List<TopBarAction>? = null
 ) {

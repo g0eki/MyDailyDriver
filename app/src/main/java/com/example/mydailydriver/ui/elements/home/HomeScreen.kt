@@ -17,11 +17,13 @@ import com.example.mydailydriver.ui.MyDailyDriverViewModel
 import com.example.mydailydriver.ui.theme.MyDailyDriverTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mydailydriver.ui.elements.components.CustomTopBar
 
 // ✅ Zustandsbehaftet – kennt das ViewModel
 @Composable
-fun HomeScreen(viewModel: MyDailyDriverViewModel,  onAddNote: () -> Unit) {
+fun HomeScreen(viewModel: MyDailyDriverViewModel = viewModel(),
+               onAddNote: () -> Unit) {
     val notes by viewModel.note.collectAsState(initial = emptyList())
     HomeContent(notes = notes,
                 onAddNote = onAddNote)
