@@ -10,15 +10,20 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.material.icons.automirrored.filled.*
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.FileDownload
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.res.painterResource
+import com.example.mydailydriver.R
 
 
 data class TopBarAction(
-    val imageVector: ImageVector,
+    val icon: Painter,
     val contentDescription: String?, // String? erlaubt null, falls ein Icon rein dekorativ ist
     val onClick: () -> Unit
 )
@@ -71,7 +76,7 @@ fun TopBarStateless(
             barActions?.forEach { actionTmp ->
                 IconButton(onClick = { actionTmp.onClick() }) {
                     Icon(
-                        imageVector = actionTmp.imageVector,
+                        painter = actionTmp.icon,
                         contentDescription = actionTmp.contentDescription
                     )
                 }
@@ -91,19 +96,40 @@ fun CustomTopBarPreview(){
 
     val titel: String = "Home"
 
-    val barActions = listOf<TopBarAction>(
-        TopBarAction(
-            imageVector = Icons.Default.Edit,
-            contentDescription = "Bearbeiten",
-            onClick = { /* Bearbeiten Logik */ }
-        ),
-        TopBarAction(
-            imageVector = Icons.Default.Save,
-            contentDescription = "Speichern",
-            onClick = { /* Bearbeiten Logik */ }
-        ),
-    )
+    val barActions = previewBarActions()
 
     CustomTopBar(titel=titel, onBack = {}, barActions = barActions)
 
 }
+
+
+@Composable
+fun previewBarActions() = listOf<TopBarAction>(
+    TopBarAction(
+        icon = rememberVectorPainter(Icons.Default.Save),
+        contentDescription = "Speichern",
+        onClick = {  }
+    ),
+    TopBarAction(
+        // imageVector = Icons.Default.file_save,
+        icon = rememberVectorPainter(Icons.Default.FileDownload),
+        contentDescription = "FileDownload",
+        onClick = {
+            /* Bearbeiten Logik */
+            TODO()
+        }
+    ),
+
+    TopBarAction(
+        icon = painterResource(id = R.drawable.outline_file_save_24),
+        contentDescription = "Speichern",
+        onClick = { /* Save Logik */
+            TODO() }
+    ),
+    TopBarAction(
+        icon = painterResource(id = R.drawable.outline_file_save_24),
+        contentDescription = "Speichern",
+        onClick = { /* Save Logik */
+            TODO() }
+    ),
+)

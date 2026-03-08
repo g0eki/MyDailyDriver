@@ -1,10 +1,13 @@
 package com.example.mydailydriver.ui.elements.edit
 
+import android.R.attr.contentDescription
+import android.R.attr.onClick
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Save
+import androidx.compose.material.icons.filled.FileDownload
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.remember
@@ -13,22 +16,25 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.mydailydriver.ui.MyDailyDriverViewModel
 import com.example.mydailydriver.ui.elements.components.CustomTopBar
 import com.example.mydailydriver.ui.elements.components.TopBarAction
+import com.example.mydailydriver.ui.elements.components.previewBarActions
 import com.example.mydailydriver.ui.theme.MyDailyDriverTheme
+import com.example.mydailydriver.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 // Das ist zustand-Behaftet und Zustandlos! muss es Trennen
 fun EditScreen(
-    viewModel: MyDailyDriverViewModel = viewModel(),
+    viewModel: EditViewModel = viewModel(),
     onBack: (() -> Unit)? = null,
     // onEditActions: List<TopBarAction>? = null
 ) {
@@ -40,22 +46,30 @@ fun EditScreen(
 
     val barActions = listOf<TopBarAction>(
         TopBarAction(
-            imageVector = Icons.Default.Edit,
-            contentDescription = "Bearbeiten",
+            icon = rememberVectorPainter(Icons.Default.Save),
+            contentDescription = "Speichern",
+            onClick = {
+                viewModel.addNote(newTitel = title, newNote = content)
+                if (onBack != null) {
+                    onBack()
+                }
+            }
+        ),
+        TopBarAction(
+            // imageVector = Icons.Default.file_save,
+            icon = rememberVectorPainter(Icons.Default.FileDownload),
+            contentDescription = "FileDownload",
             onClick = {
                 /* Bearbeiten Logik */
                 TODO()
             }
         ),
+
         TopBarAction(
-            imageVector = Icons.Default.Save,
+            icon = painterResource(id = R.drawable.outline_file_save_24),
             contentDescription = "Speichern",
-            onClick = {
-                viewModel.addNote(newTitel = title, newNote = content)
-//                if (onBack != null) {
-//                    onBack()
-//                }
-            }
+            onClick = { /* Save Logik */
+                TODO() }
         ),
     )
 
@@ -203,22 +217,7 @@ fun CustomTextField(
 fun EditScreenPreview() {
 
     val bodyFocusRequester = remember { FocusRequester() }
-    val barActions = listOf<TopBarAction>(
-        TopBarAction(
-            imageVector = Icons.Default.Edit,
-            contentDescription = "Bearbeiten",
-            onClick = {
-                /* Bearbeiten Logik */
-                TODO()
-            }
-        ),
-        TopBarAction(
-            imageVector = Icons.Default.Save,
-            contentDescription = "Speichern",
-            onClick = { }
-        ),
-    )
-
+    val barActions = previewBarActions()
 
     MyDailyDriverTheme{
         EditContent(
@@ -232,3 +231,5 @@ fun EditScreenPreview() {
             )
     }
 }
+
+

@@ -13,7 +13,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.collectAsState
 import com.example.mydailydriver.data.datastore.Note
-import com.example.mydailydriver.ui.MyDailyDriverViewModel
 import com.example.mydailydriver.ui.theme.MyDailyDriverTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -22,9 +21,9 @@ import com.example.mydailydriver.ui.elements.components.CustomTopBar
 
 // ✅ Zustandsbehaftet – kennt das ViewModel
 @Composable
-fun HomeScreen(viewModel: MyDailyDriverViewModel = viewModel(),
+fun HomeScreen(viewModel: HomeViewModel = viewModel(),
                onAddNote: () -> Unit) {
-    val notes by viewModel.note.collectAsState(initial = emptyList())
+    val notes by viewModel.notes.collectAsState(initial = emptyList())
     HomeContent(notes = notes,
                 onAddNote = onAddNote)
 }

@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.mydailydriver.ui.elements.navigation.Navigation
 import com.example.mydailydriver.ui.theme.MyDailyDriverTheme
+import com.example.mydailydriver.R
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

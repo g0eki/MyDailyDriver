@@ -1,4 +1,4 @@
-package com.example.mydailydriver.ui
+package com.example.mydailydriver.ui.elements.edit
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -8,7 +8,7 @@ import com.example.mydailydriver.data.datastore.NotesStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-class MyDailyDriverViewModel_UNSED(application: Application) : AndroidViewModel(application) {
+class EditViewModel(application: Application) : AndroidViewModel(application) {
 
     private val my_store_notes = NotesStore(application)
 
@@ -24,10 +24,9 @@ class MyDailyDriverViewModel_UNSED(application: Application) : AndroidViewModel(
             my_store_notes.deleteNote(id = id)
         }
     }
-
     // getter
-    val note: Flow<List<Note>>
-        get() = my_store_notes.notes
+//    val note: Flow<List<Note>>
+//        get() = my_store_notes.notes
 
     // setter
     fun updateNote(id: String, newTitel: String, newContent: String) {

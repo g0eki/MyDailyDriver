@@ -7,14 +7,14 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.example.mydailydriver.ui.MyDailyDriverViewModel
 import com.example.mydailydriver.ui.elements.components.Screens
 
 @Composable
-fun Navigation(viewModel: MyDailyDriverViewModel = viewModel()) {
+fun Navigation(
+    // viewModel: MyDailyDriverViewModel = viewModel()
+    ) {
     val navController = rememberNavController()
     val nav = NavigationHelper(
                     navController=navController)
@@ -37,12 +37,8 @@ fun Navigation(viewModel: MyDailyDriverViewModel = viewModel()) {
             modifier = Modifier
         ) {
             with(nav) {
-                navHostContent() // this = nav
+                navHostContent() // this = nav - Alternative: nav.run {navHostContent() }
             }
-            /*
-            Oder:
-            nav.run {navHostContent() } // this = nav
-             */
         }
     }
 

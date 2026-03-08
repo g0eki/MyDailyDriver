@@ -71,23 +71,6 @@ internal class NavigationHelper(
 
         composable(route = Screens.Notes.name) {
             val canGoBack = navController.previousBackStackEntry != null
-
-//            val barActions = listOf<TopBarAction>(
-//                TopBarAction(
-//                    imageVector = Icons.Default.Edit,
-//                    contentDescription = "Bearbeiten",
-//                    onClick = {
-//                        /* Bearbeiten Logik */
-//                        TODO()
-//                    }
-//                ),
-//                TopBarAction(
-//                    imageVector = Icons.Default.Save,
-//                    contentDescription = "Speichern",
-//                    onClick = { /* Bearbeiten Logik */ }
-//                ),
-//            )
-
             EditScreen(
                 onBack = {
                     if (canGoBack) {
