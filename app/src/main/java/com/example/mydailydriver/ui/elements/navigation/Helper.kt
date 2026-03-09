@@ -70,14 +70,16 @@ internal class NavigationHelper(
         }
 
         composable(route = Screens.Notes.name) {
-            val canGoBack = navController.previousBackStackEntry != null
+            // val canGoBack = navController.previousBackStackEntry != null
             EditScreen(
                 onBack = {
-                    if (canGoBack) {
-                        navController.popBackStack()
-                    } else {null}
+                    if (!navController.popBackStack()) {
+                        navController.navigate(route = Screens.Start.name) {
+                            popUpTo(0)
+                        }
+                    }
                 },
-                // onEditActions = barActions
+                // onEditActions = barActions,
             )
         }
     }

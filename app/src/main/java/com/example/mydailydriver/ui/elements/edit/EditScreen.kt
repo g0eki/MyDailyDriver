@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.FileDownload
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -32,15 +33,15 @@ import com.example.mydailydriver.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-// Das ist zustand-Behaftet und Zustandlos! muss es Trennen
+// Stateful Composables:
 fun EditScreen(
     viewModel: EditViewModel = viewModel(),
     onBack: (() -> Unit)? = null,
     // onEditActions: List<TopBarAction>? = null
 ) {
     // alles mit var, remember, mutableStateOf() etc. ZustazEnde ,
-    var title by remember { mutableStateOf("") }
-    var content by remember { mutableStateOf("") }
+    var title by rememberSaveable() { mutableStateOf("") }
+    var content by rememberSaveable { mutableStateOf("") }
 
     val bodyFocusRequester = remember { FocusRequester() }
 
@@ -61,7 +62,8 @@ fun EditScreen(
             contentDescription = "FileDownload",
             onClick = {
                 /* Bearbeiten Logik */
-                TODO()
+                // TODO()
+                Log.d("EditScreen", "Download action tapped (not implemented)")
             }
         ),
 
@@ -69,7 +71,9 @@ fun EditScreen(
             icon = painterResource(id = R.drawable.outline_file_save_24),
             contentDescription = "Speichern",
             onClick = { /* Save Logik */
-                TODO() }
+                // TODO()
+                Log.d("EditScreen", "Download action tapped (not implemented)")
+            }
         ),
     )
 
@@ -86,8 +90,7 @@ fun EditScreen(
 
 }
 
-// zustandslosen UI - Elemente die nicht Zustände sind
-// @OptIn(ExperimentalMaterial3Api::class)
+//Stateless Composables:  zustandslosen UI
 @Composable
 fun EditContent(
     onBack: (() -> Unit)? = null,

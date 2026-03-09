@@ -1,5 +1,6 @@
 package com.example.mydailydriver.ui.elements.navigation
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
@@ -20,7 +21,7 @@ fun Navigation(
                     navController=navController)
 
     ModalNavigationDrawer(
-        modifier = Modifier,
+        // modifier = Modifier,
         drawerContent = {
             ModalDrawerSheet(
                 drawerContainerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -34,7 +35,7 @@ fun Navigation(
         NavHost(
             navController = navController,
             startDestination = Screens.Start.name,
-            modifier = Modifier
+            modifier = Modifier.fillMaxSize()
         ) {
             with(nav) {
                 navHostContent() // this = nav - Alternative: nav.run {navHostContent() }
