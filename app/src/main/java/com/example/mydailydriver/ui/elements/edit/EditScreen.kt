@@ -30,6 +30,7 @@ import com.example.mydailydriver.ui.elements.components.TopBarAction
 import com.example.mydailydriver.ui.elements.components.previewBarActions
 import com.example.mydailydriver.ui.theme.MyDailyDriverTheme
 import com.example.mydailydriver.R
+import com.example.mydailydriver.data.core.Note
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -120,6 +121,7 @@ fun EditContent(
             ) {
                 // Also ich kann noch Surface(....) { BasicTextField(...) ... } Aufrufen
                 // Titel
+                // toDO: private fun CustomTextField(
                 BasicTextField(
                     value = title,
                     onValueChange = onTitelChange,
@@ -135,7 +137,7 @@ fun EditContent(
                     decorationBox = { innerTextField ->
                         if (title.isEmpty()) {
                             Text(
-                                text = "Titel",
+                                text = Note().randomNote(),  // "Titel",
                                 fontSize = 24.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f)
@@ -169,7 +171,7 @@ fun EditContent(
                         decorationBox = { innerTextField ->
                             if (content.isEmpty()) {
                                 Text(
-                                    text = "Notiz beginnen …",
+                                    text = Note().randomNote(), // "Notiz beginnen …",
                                     fontSize = 16.sp,
                                     color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f)
                                 )
@@ -186,7 +188,7 @@ fun EditContent(
 }
 
 @Composable
-fun CustomTextField(
+private fun CustomTextField(
     value: String,
     onValueChange: (String) -> Unit = {},
     placeholder: String,
@@ -225,9 +227,9 @@ fun EditScreenPreview() {
     MyDailyDriverTheme{
         EditContent(
             onBack = {  },
-            title = "TestTitel",
+            title = Note().randomNote(),
             // onTitelChange = ,
-            content = "Test Content",
+            content = Note().randomNote(),
             // onContentChange = ,
             barActions = barActions,
             bodyFocusRequester = bodyFocusRequester
