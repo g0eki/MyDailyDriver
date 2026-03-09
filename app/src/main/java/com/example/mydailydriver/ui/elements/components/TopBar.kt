@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import com.example.mydailydriver.R
 
 
@@ -59,7 +60,13 @@ fun TopBarStateless(
 
     // TopAppBar(
     CenterAlignedTopAppBar(
-        title = { Text(titel, modifier=Modifier, style = MaterialTheme.typography.titleLarge) },
+        title = {
+            Text(titel,
+                modifier=Modifier,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                style = MaterialTheme.typography.titleLarge, )
+                },
         navigationIcon = {
             if (onBack != null) {
                 IconButton(onClick = { onBack.invoke() }) {
@@ -126,10 +133,10 @@ fun previewBarActions() = listOf<TopBarAction>(
         onClick = { /* Save Logik */
             TODO() }
     ),
-    TopBarAction(
-        icon = painterResource(id = R.drawable.outline_file_save_24),
-        contentDescription = "Speichern",
-        onClick = { /* Save Logik */
-            TODO() }
-    ),
+//    TopBarAction(
+//        icon = painterResource(id = R.drawable.outline_file_save_24),
+//        contentDescription = "Speichern",
+//        onClick = { /* Save Logik */
+//            TODO() }
+//    ),
 )

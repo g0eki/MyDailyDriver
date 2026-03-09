@@ -2,6 +2,7 @@ package com.example.mydailydriver.ui.elements.edit
 
 import android.R.attr.contentDescription
 import android.R.attr.onClick
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
@@ -31,6 +32,9 @@ import com.example.mydailydriver.ui.elements.components.previewBarActions
 import com.example.mydailydriver.ui.theme.MyDailyDriverTheme
 import com.example.mydailydriver.R
 import com.example.mydailydriver.data.core.Note
+
+
+const val maxChars = 30
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -106,6 +110,7 @@ fun EditContent(
         topBar = {
             CustomTopBar(
                 titel = title,
+                // titel = "Edit",
                 onBack = onBack,
                 barActions = barActions
             )
@@ -137,7 +142,8 @@ fun EditContent(
                     decorationBox = { innerTextField ->
                         if (title.isEmpty()) {
                             Text(
-                                text = Note().randomNote(),  // "Titel",
+                                text = Note().randomNote().take(maxChars),  // "Titel",
+                                // text = "Titel",
                                 fontSize = 24.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f)
@@ -227,7 +233,8 @@ fun EditScreenPreview() {
     MyDailyDriverTheme{
         EditContent(
             onBack = {  },
-            title = Note().randomNote(),
+            title = Note().randomNote().take(maxChars),
+            // title = "Titel",
             // onTitelChange = ,
             content = Note().randomNote(),
             // onContentChange = ,
