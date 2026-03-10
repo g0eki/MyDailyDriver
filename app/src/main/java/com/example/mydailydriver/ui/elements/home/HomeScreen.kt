@@ -25,6 +25,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mydailydriver.R
 import com.example.mydailydriver.ui.AppViewModelProvider
 import com.example.mydailydriver.ui.elements.components.CustomTopBar
+import kotlinx.coroutines.launch
 
 
 // toDO: siehe: ./HomeScreen_toDO.md
@@ -64,6 +65,7 @@ fun HomeContent(notes: List<Note>,
 
     // Falls du den Drawer per Button öffnen willst, brauchst du ein CoroutineScope
     // TODO() val scope = rememberCoroutineScope()
+    val scope = rememberCoroutineScope()
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -114,7 +116,18 @@ fun HomeContent(notes: List<Note>,
         Scaffold(
             // topBar = { TopAppBar(title = { Text("My Daily Driver") }) },
             topBar = {
-                CustomTopBar(titel = "My Daily Driver", onMenuClick={})
+                CustomTopBar(
+                    titel = "My Daily Driver",
+                    onMenuClick={
+                        scope.launch {
+                            // Öffnet den Drawer, falls zu, schließt ihn, falls offen
+                            if (drawerState.isClosed) drawerState.open() else drawerState.close()
+
+                            // ODER alternativ, falls du nur öffnen willst:
+                            // drawerState.apply { if (isClosed) open() else close() }
+                        }
+                    }
+                )
             },
             floatingActionButton = {
                 FloatingActionButton(onClick = onAddNote) {
