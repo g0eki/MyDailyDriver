@@ -20,7 +20,17 @@ fun Navigation(
     val nav = NavigationHelper(
                     navController=navController)
 
-    ModalNavigationDrawer(
+    NavHost(
+        navController = navController,
+        startDestination = Screens.Start.name,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        with(nav) {
+            navHostContent() // this = nav - Alternative: nav.run {navHostContent() }
+        }
+    }
+
+/*    ModalNavigationDrawer(
         // modifier = Modifier,
         drawerContent = {
             ModalDrawerSheet(
@@ -41,6 +51,6 @@ fun Navigation(
                 navHostContent() // this = nav - Alternative: nav.run {navHostContent() }
             }
         }
-    }
+    }*/
 
 }

@@ -65,6 +65,7 @@ internal class NavigationHelper(
     fun NavGraphBuilder.navHostContent() {
         composable(route = Screens.Start.name) {
             HomeScreen(
+                onNavigateHome = { navController.navigate(route = Screens.Start.name) },
                 onAddNote = { navController.navigate(route = Screens.Notes.name) }
             )
         }

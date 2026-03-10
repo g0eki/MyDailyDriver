@@ -3,7 +3,7 @@ package com.example.mydailydriver.ui
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mydailydriver.data.datastore.Note
+import com.example.mydailydriver.data.models.Note
 import com.example.mydailydriver.data.datastore.NotesStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch

@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.material.icons.automirrored.filled.*
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.FileDownload
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.ui.Modifier
@@ -35,6 +36,7 @@ fun CustomTopBar(
     // viewModel: MyDailyDriverViewModel, // fur Zustandsbehaftet
     titel: String,
     onBack: (() -> Unit)? = null,
+    onMenuClick: (() -> Unit)? = null,
     barActions: List<TopBarAction>? = null  // Liste von Aktionen oder null
 ) {
     /*
@@ -44,9 +46,10 @@ fun CustomTopBar(
      */
 
     TopBarStateless(
-        titel,
-        onBack,
-        barActions
+        titel=titel,
+        onBack=onBack,
+        onMenuClick=onMenuClick,
+        barActions = barActions
     )
 }
 
@@ -55,6 +58,7 @@ fun CustomTopBar(
 fun TopBarStateless(
     titel: String,
     onBack: (() -> Unit)? = null,
+    onMenuClick: (() -> Unit)? = null, // Neu: Für das Burger-Menü
     barActions: List<TopBarAction>? = null  // Liste von Aktionen oder null
 ) {
 
@@ -75,8 +79,14 @@ fun TopBarStateless(
                         contentDescription = "Zurück"
                     )
                 }
+            } else if(onMenuClick != null) {
+                IconButton(onClick = onMenuClick) {
+                    Icon(
+                        painter = rememberVectorPainter(Icons.Default.Menu),
+                        contentDescription = "Menu"
+                    )
+                }
             }
-
         },
         actions = {
 

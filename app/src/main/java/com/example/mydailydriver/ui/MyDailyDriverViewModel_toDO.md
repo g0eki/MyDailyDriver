@@ -17,7 +17,7 @@ package com.example.mydailydriver.ui.elements.home
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import com.example.mydailydriver.data.datastore.Note
+import com.example.mydailydriver.data.models.Note
 import com.example.mydailydriver.data.datastore.NotesStore
 import kotlinx.coroutines.flow.Flow
 

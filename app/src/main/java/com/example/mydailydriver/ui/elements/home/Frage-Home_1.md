@@ -29,7 +29,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.collectAsState
-import com.example.mydailydriver.data.datastore.Note
+import com.example.mydailydriver.data.models.Note
 import com.example.mydailydriver.ui.MyDailyDriverViewModel
 import com.example.mydailydriver.ui.theme.MyDailyDriverTheme
 

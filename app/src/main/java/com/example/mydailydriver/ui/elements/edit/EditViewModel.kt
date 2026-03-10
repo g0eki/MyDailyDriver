@@ -2,15 +2,17 @@ package com.example.mydailydriver.ui.elements.edit
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mydailydriver.data.datastore.Note
 import com.example.mydailydriver.data.datastore.NotesStore
-import kotlinx.coroutines.flow.Flow
+import com.example.mydailydriver.data.repository.NoteRepository
 import kotlinx.coroutines.launch
 
-class EditViewModel(application: Application) : AndroidViewModel(application) {
+class EditViewModel(
+    private val repository: NoteRepository
+) : ViewModel() {
 
-    private val my_store_notes = NotesStore(application)
+    // private val my_store_notes = NotesStore(application)
 
     // Create and Delete
     fun addNote(newTitel: String, newNote: String) {
