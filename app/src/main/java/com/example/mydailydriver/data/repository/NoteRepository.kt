@@ -8,7 +8,7 @@ interface NoteRepository {
 
     suspend fun addNote(title: String, content: String)
     suspend fun deleteNote(id: String)
-    suspend fun updateNote(id: String, title: String, content: String)
+    suspend fun updateNote(id: String, newTitle: String, newContent: String)
 
     // Hier könnten später auch Gruppen-Funktionen hin:
     // suspend fun addNoteToGroup(groupId: String, note: Note)

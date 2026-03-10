@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mydailydriver.data.datastore.NotesStore
 import com.example.mydailydriver.data.repository.NoteRepository
 import kotlinx.coroutines.launch
 
@@ -17,13 +16,14 @@ class EditViewModel(
     // Create and Delete
     fun addNote(newTitel: String, newNote: String) {
         viewModelScope.launch {
-            my_store_notes.addNote(title = newTitel, content = newNote)
+            // my_store_notes.addNote(title = newTitel, content = newNote)
+            repository.addNote(title = newTitel, content = newNote)
         }
     }
 
     fun deleteNote(id: String) {
         viewModelScope.launch {
-            my_store_notes.deleteNote(id = id)
+            repository.deleteNote(id = id)
         }
     }
     // getter
@@ -33,7 +33,7 @@ class EditViewModel(
     // setter
     fun updateNote(id: String, newTitel: String, newContent: String) {
         viewModelScope.launch {
-            my_store_notes.updateNote(id = id, newTitle = newTitel, newContent = newContent)
+            repository.updateNote(id = id, newTitle = newTitel, newContent = newContent)
         }
     }
 }

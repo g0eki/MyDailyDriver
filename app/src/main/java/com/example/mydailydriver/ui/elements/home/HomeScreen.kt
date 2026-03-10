@@ -23,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mydailydriver.R
+import com.example.mydailydriver.ui.AppViewModelProvider
 import com.example.mydailydriver.ui.elements.components.CustomTopBar
 
 
@@ -33,7 +34,8 @@ import com.example.mydailydriver.ui.elements.components.CustomTopBar
 fun HomeScreen(
     // Wir übergeben 'factory = HomeViewModelFactory'.
     // Dadurch wird das ViewModel exakt so gebaut, wie wir es unten in der Datei definiert haben.
-    viewModel: HomeViewModel = viewModel(factory = HomeViewModelFactory),
+    // NEW: siehe TODO(): AppViewModelProvider.kt
+    viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider),
     onNavigateHome: () -> Unit = {},
     onAddNote: () -> Unit,
 ) {

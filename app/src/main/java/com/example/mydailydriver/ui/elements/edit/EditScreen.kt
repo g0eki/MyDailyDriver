@@ -6,7 +6,6 @@ import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.FileDownload
 import androidx.compose.material3.*
@@ -32,6 +31,7 @@ import com.example.mydailydriver.ui.elements.components.previewBarActions
 import com.example.mydailydriver.ui.theme.MyDailyDriverTheme
 import com.example.mydailydriver.R
 import com.example.mydailydriver.data.core.Note
+import com.example.mydailydriver.ui.AppViewModelProvider
 
 
 const val maxChars = 30
@@ -40,7 +40,7 @@ const val maxChars = 30
 @Composable
 // Stateful Composables:
 fun EditScreen(
-    viewModel: EditViewModel = viewModel(),
+    viewModel: EditViewModel = viewModel(factory = AppViewModelProvider),
     onBack: (() -> Unit)? = null,
     // onEditActions: List<TopBarAction>? = null
 ) {

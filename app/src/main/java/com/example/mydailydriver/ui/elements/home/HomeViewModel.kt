@@ -41,7 +41,7 @@ class HomeViewModel(
     }
 }
 
-/**
+/** TODO() wurde duch: AppViewModelProvider.kt ersetzt
  * DIE FACTORY (Die Fabrik)
  * * Problem: Android weiß standardmäßig nur, wie man leere ViewModels (ohne Parameter) erstellt.
  * Unser HomeViewModel braucht aber ein 'NoteRepository' im Konstruktor.

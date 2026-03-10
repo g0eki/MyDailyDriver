@@ -2,7 +2,27 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!--
+    Ah, verstehe! Du willst wissen, was das Android-System *technisch* macht, wenn es genau diese Zeilen liest. Entschuldige, dann habe ich die Frage vorhin falsch verstanden und mich zu sehr auf den Fehler konzentriert.
+
+Stell dir vor, das Betriebssystem des Handys liest diese Datei von oben nach unten, bevor es die App startet. Genau das passiert hier Zeile für Zeile:
+
+**1. `<application**`
+Das System registriert: *"Okay, alles was jetzt in diesem Block steht, sind grundlegende Einstellungen, die für die **gesamte** App gelten (nicht nur für einen speziellen Screen)."*
+
+**2. `android:name=".MyDailyDriverApplication"**`
+
+* **Was passiert da?** Das ist der absolute Startschuss. Bevor Android auch nur einen einzigen Pixel deiner Benutzeroberfläche zeichnet, lädt es diese spezifische Kotlin-Klasse in den Arbeitsspeicher und führt deren `onCreate()`-Funktion aus.
+* **Warum haben wir das gemacht?** Weil wir genau hier unser `NoteRepository` (die Datenbank) zusammenbauen. Durch diese Zeile garantieren wir: Die Datenbank ist zu 100 % startklar und im Hintergrund geladen, bevor irgendein ViewModel oder Screen danach fragen kann.
+
+
+* **Was passiert da?** Android schaut in den Ordnern deines Projekts (unter `app/src/main/res/mipmap`) nach einer Bilddatei mit dem Namen `ic_launcher`.
+* **Wofür ist das?** Das ist das kleine App-Icon, das der Nutzer auf dem Homescreen seines Handys sieht. Wenn du das Icon deiner App später mal ändern willst (z. B. ein Notizblock-Bildchen), musst du das neue Bild in den Ordner legen und den Namen hier anpassen.
+
+Zusammengefasst: Dieser kleine Block sagt dem Handy, **wer** der Boss beim App-Start ist (`android:name`), **ob** Daten gesichert werden dürfen (`allowBackup`) und **wie** die App von außen aussieht (`icon`).
+      -->
     <application
+        android:name=".MyDailyDriverApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
