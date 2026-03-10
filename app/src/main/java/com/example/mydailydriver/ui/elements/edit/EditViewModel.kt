@@ -11,8 +11,6 @@ class EditViewModel(
     private val repository: NoteRepository
 ) : ViewModel() {
 
-    // private val my_store_notes = NotesStore(application)
-
     // Create and Delete
     fun addNote(newTitel: String, newNote: String) {
         viewModelScope.launch {
@@ -26,9 +24,6 @@ class EditViewModel(
             repository.deleteNote(id = id)
         }
     }
-    // getter
-//    val note: Flow<List<Note>>
-//        get() = my_store_notes.notes
 
     // setter
     fun updateNote(id: String, newTitel: String, newContent: String) {
