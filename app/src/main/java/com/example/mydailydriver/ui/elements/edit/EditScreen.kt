@@ -49,6 +49,10 @@ fun EditScreen(
     var title by rememberSaveable() { mutableStateOf("") }
     var content by rememberSaveable { mutableStateOf("") }
 
+    /*
+    TODO(): getIT von dem Aktuellen Screen, oder gleich das class ?
+     */
+
     val bodyFocusRequester = remember { FocusRequester() }
 
     val barActions = listOf<TopBarAction>(
@@ -74,13 +78,21 @@ fun EditScreen(
         ),
 
         TopBarAction(
-            icon = painterResource(id = R.drawable.outline_file_save_24),
+            icon = painterResource(id = R.drawable.baseline_delete_24),
             contentDescription = "Speichern",
-            onClick = { /* Save Logik */
-                // TODO()
-                Log.d("EditScreen", "Download action tapped (not implemented)")
+            onClick = {
+                viewModel.deleteNote()
             }
         ),
+
+//        TopBarAction(
+//            icon = painterResource(id = R.drawable.outline_file_save_24),
+//            contentDescription = "Speichern",
+//            onClick = { /* Save Logik */
+//                // TODO()
+//                Log.d("EditScreen", "Download action tapped (not implemented)")
+//            }
+//        ),
     )
 
     // Aufruf der zustandslosen UI
