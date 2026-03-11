@@ -16,6 +16,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.example.mydailydriver.ui.elements.components.EditNote
+import com.example.mydailydriver.ui.elements.components.Home
 import com.example.mydailydriver.ui.elements.edit.EditScreen
 import com.example.mydailydriver.ui.elements.components.Screens
 import com.example.mydailydriver.ui.elements.home.HomeScreen
@@ -62,7 +64,7 @@ internal class NavigationHelper(
         )
     }
 
-    fun NavGraphBuilder.navHostContent() {
+/*    fun NavGraphBuilder.navHostContent() {
         composable(route = Screens.Start.name) {
             HomeScreen(
                 onNavigateHome = { navController.navigate(route = Screens.Start.name) },
@@ -71,6 +73,29 @@ internal class NavigationHelper(
         }
 
         composable(route = Screens.Notes.name) {
+            // val canGoBack = navController.previousBackStackEntry != null
+            EditScreen(
+                onBack = {
+                    if (!navController.popBackStack()) {
+                        navController.navigate(route = Screens.Start.name) {
+                            popUpTo(0)
+                        }
+                    }
+                },
+                // onEditActions = barActions,
+            )
+        }
+    }*/
+
+    fun NavGraphBuilder.navHostContent() {
+        composable<Home> {
+            HomeScreen(
+                onNavigateHome = { navController.navigate(route = Home) },
+                onAddNote = { navController.navigate(route = EditNote()) }
+            )
+        }
+
+        composable<EditNote> {
             // val canGoBack = navController.previousBackStackEntry != null
             EditScreen(
                 onBack = {

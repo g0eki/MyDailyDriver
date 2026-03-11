@@ -42,6 +42,7 @@ const val maxChars = 30
 fun EditScreen(
     viewModel: EditViewModel = viewModel(factory = AppViewModelProvider),
     onBack: (() -> Unit)? = null,
+    note: Note? = null,
     // onEditActions: List<TopBarAction>? = null
 ) {
     // alles mit var, remember, mutableStateOf() etc. ZustazEnde ,
