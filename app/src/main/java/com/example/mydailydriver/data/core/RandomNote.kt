@@ -3,7 +3,7 @@ package com.example.mydailydriver.data.core
 import io.github.serpro69.kfaker.faker
 import kotlin.random.Random
 
-class Note {
+class RndNoteTexit {
 
     // ✅ Korrekte Syntax für 1.16.0 mit deutschem Locale
     private val faker = faker {

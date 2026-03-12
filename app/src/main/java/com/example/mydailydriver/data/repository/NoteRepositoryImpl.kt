@@ -19,7 +19,12 @@ class NoteRepositoryImpl(
         notesStore.deleteNote(id)
     }
 
-    override suspend fun updateNote(id: String, title: String, content: String) {
-        notesStore.updateNote(id, title, content)
+    override suspend fun updateNote(id: String, newTitle: String, newContent: String) {
+        notesStore.updateNote(id, newTitle=newTitle, newContent=newContent)
     }
+
+    override suspend fun getNoteById(id: String): Note? {
+        return notesStore.getNoteById(id)
+    }
+
 }

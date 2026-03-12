@@ -8,6 +8,7 @@ import com.example.mydailydriver.data.models.Note
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.json.Json
+import kotlinx.coroutines.flow.first  // ✅ NEU
 
 private val Context.notesDataStore by preferencesDataStore(name = "notes-store")
 
@@ -54,6 +55,11 @@ class NotesStore(private val context: Context) {
             }
             preferences[notesKey] = Json.encodeToString(currentNotes)
         }
+    }
+
+    suspend fun getNoteById(id: String): Note? {
+        val json = context.notesDataStore.data.first()[notesKey] ?: "[]"
+        return Json.decodeFromString<List<Note>>(json).find { it.id == id }
     }
 
     companion object {

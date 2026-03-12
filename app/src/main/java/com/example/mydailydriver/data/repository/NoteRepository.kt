@@ -10,6 +10,9 @@ interface NoteRepository {
     suspend fun deleteNote(id: String)
     suspend fun updateNote(id: String, newTitle: String, newContent: String)
 
+    suspend fun getNoteById(id: String): Note?  // toDO(): Wenn man Room verwendet, kann drauf verzichten ?
+
     // Hier könnten später auch Gruppen-Funktionen hin:
     // suspend fun addNoteToGroup(groupId: String, note: Note)
+
 }

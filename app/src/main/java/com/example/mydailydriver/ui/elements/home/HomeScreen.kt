@@ -39,20 +39,26 @@ fun HomeScreen(
     viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider),
     onNavigateHome: () -> Unit = {},
     onAddNote: () -> Unit,
+    onEditNote: (Note) -> Unit = {},  // NEU
 ) {
     val notes by viewModel.notes.collectAsState(initial = emptyList())
     HomeContent(
         notes = notes,
         onNavigateHome = onNavigateHome,
-        onAddNote = onAddNote)
+        onAddNote = onAddNote,
+        onEditNote = onEditNote,
+    )
 }
 
 // ✅ Zustandslos – nur UI, previewbar!
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeContent(notes: List<Note>,
-                onNavigateHome: () -> Unit = {},
-                onAddNote: () -> Unit) {
+fun HomeContent(
+    notes: List<Note>,
+    onNavigateHome: () -> Unit = {},
+    onAddNote: () -> Unit,
+    onEditNote: (Note) -> Unit = {}, // ✅
+    ) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
 
     /*
@@ -169,7 +175,11 @@ fun HomeContent(notes: List<Note>,
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     contentPadding = PaddingValues(vertical = 12.dp)
                 ) {
-                    items(notes) { note -> NoteItem(note = note) }
+                    items(notes) { note ->
+                        NoteItem(
+                            note = note,
+                            onClick = {onEditNote(note)},
+                            ) }
                 }
             }
         }
@@ -177,10 +187,11 @@ fun HomeContent(notes: List<Note>,
 }
 
 @Composable
-fun NoteItem(note: Note) {
+fun NoteItem(note: Note, onClick: () -> Unit = {}) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        onClick = onClick // toDO() - Rückverfolgen KArten anklicken ?
     ) {
         Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
             Text(note.title,

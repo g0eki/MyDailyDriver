@@ -21,6 +21,9 @@ import com.example.mydailydriver.ui.elements.components.Home
 import com.example.mydailydriver.ui.elements.edit.EditScreen
 import com.example.mydailydriver.ui.elements.components.Screens
 import com.example.mydailydriver.ui.elements.home.HomeScreen
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.toRoute
+
 
 // 1. Kein @Composable hier!
 internal class NavigationHelper(
@@ -91,20 +94,35 @@ internal class NavigationHelper(
         composable<Home> {
             HomeScreen(
                 onNavigateHome = { navController.navigate(route = Home) },
-                onAddNote = { navController.navigate(route = EditNote()) }
+                onAddNote = { navController.navigate(route = EditNote()) },
+                onEditNote = { note ->
+                    navController.navigate(route = EditNote(noteId = note.id))
+                },
             )
         }
 
         composable<EditNote> {
             // val canGoBack = navController.previousBackStackEntry != null
+
+            /* toDO()
+                 backStackEntry ->  // Lambda-Parameter
+                 val editNote = backStackEntry.toRoute<EditNote>()
+             */
+            val editNote = it.toRoute<EditNote>() // ✅ Argument auslesen
+
+            // val backStackEntry by navController.currentBackStackEntryAsState() ???
+
+
             EditScreen(
+
                 onBack = {
                     if (!navController.popBackStack()) {
-                        navController.navigate(route = Screens.Start.name) {
+                        navController.navigate(route = Home) {
                             popUpTo(0)
                         }
                     }
                 },
+                noteId = editNote.noteId
                 // onEditActions = barActions,
             )
         }

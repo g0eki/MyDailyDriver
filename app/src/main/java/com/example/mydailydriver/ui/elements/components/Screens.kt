@@ -16,4 +16,4 @@ enum class Screens(@get:StringRes val title: Int) {
 object Home
 
 @Serializable
-data class EditNote(val note: Note? = null)
+data class EditNote(val noteId: String? = null)

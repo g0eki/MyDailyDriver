@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.FileDownload
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
@@ -30,8 +31,11 @@ import com.example.mydailydriver.ui.elements.components.TopBarAction
 import com.example.mydailydriver.ui.elements.components.previewBarActions
 import com.example.mydailydriver.ui.theme.MyDailyDriverTheme
 import com.example.mydailydriver.R
-import com.example.mydailydriver.data.core.Note
+import com.example.mydailydriver.data.core.RndNoteTexit
+import com.example.mydailydriver.data.models.Note
 import com.example.mydailydriver.ui.AppViewModelProvider
+
+
 
 
 const val maxChars = 30
@@ -42,12 +46,33 @@ const val maxChars = 30
 fun EditScreen(
     viewModel: EditViewModel = viewModel(factory = AppViewModelProvider),
     onBack: (() -> Unit)? = null,
-    note: Note? = null,
+    noteId:  String?= null,
     // onEditActions: List<TopBarAction>? = null
 ) {
     // alles mit var, remember, mutableStateOf() etc. ZustazEnde ,
+    /*
     var title by rememberSaveable() { mutableStateOf("") }
     var content by rememberSaveable { mutableStateOf("") }
+     */
+
+    // STATT rememberSaveable:
+    var title by remember { mutableStateOf(viewModel.title) }
+    var content by remember { mutableStateOf(viewModel.content) }
+    /*
+    // Direkt vom ViewModel lesen:
+    val title = viewModel.title        // ✅ lesen
+    val content = viewModel.content    // ✅ lesen
+
+    EditContent(
+        title = title,
+        onTitelChange = { viewModel.title = it },    // ✅ ViewModel schreiben
+        content = content,
+        onContentChange = { viewModel.content = it }, // ✅ ViewModel schreiben
+        ...
+    )
+} */
+
+
 
     /*
     TODO(): getIT von dem Aktuellen Screen, oder gleich das class ?
@@ -60,7 +85,11 @@ fun EditScreen(
             icon = rememberVectorPainter(Icons.Default.Save),
             contentDescription = "Speichern",
             onClick = {
-                viewModel.addNote(newTitel = title, newNote = content)
+                if(noteId == null) {
+                    viewModel.addNote(newTitel = title, newNote = content)
+                } else {
+                    viewModel.updateNote(id=noteId, newTitel = title, newContent = content)
+                }
                 if (onBack != null) {
                     onBack()
                 }
@@ -78,10 +107,11 @@ fun EditScreen(
         ),
 
         TopBarAction(
-            icon = painterResource(id = R.drawable.baseline_delete_24),
+            // icon = painterResource(id = R.drawable.baseline_delete_24),
+            icon = painterResource(id = R.drawable.ic_launcher_foreground),
             contentDescription = "Speichern",
             onClick = {
-                viewModel.deleteNote()
+                //TODO() viewModel.updateNote(id=noteId)
             }
         ),
 
@@ -98,12 +128,13 @@ fun EditScreen(
     // Aufruf der zustandslosen UI
     EditContent(
         onBack = onBack,
+        noteId = noteId,
         title = title,
         onTitelChange = { title = it },
         content = content,
         onContentChange = {content = it},
         barActions = barActions,
-        bodyFocusRequester = bodyFocusRequester
+        bodyFocusRequester = bodyFocusRequester,
     )
 
 }
@@ -112,6 +143,7 @@ fun EditScreen(
 @Composable
 fun EditContent(
     onBack: (() -> Unit)? = null,
+    noteId: String?,
     title: String,
     onTitelChange: (String) -> Unit = {_ ->},  // explizit ignoriert
     content: String,
@@ -155,7 +187,7 @@ fun EditContent(
                     decorationBox = { innerTextField ->
                         if (title.isEmpty()) {
                             Text(
-                                text = Note().randomNote().take(maxChars),  // "Titel",
+                                text = RndNoteTexit().randomNote().take(maxChars),  // "Titel",
                                 // text = "Titel",
                                 fontSize = 24.sp,
                                 fontWeight = FontWeight.Bold,
@@ -190,7 +222,7 @@ fun EditContent(
                         decorationBox = { innerTextField ->
                             if (content.isEmpty()) {
                                 Text(
-                                    text = Note().randomNote(), // "Notiz beginnen …",
+                                    text = RndNoteTexit().randomNote(), // "Notiz beginnen …",
                                     fontSize = 16.sp,
                                     color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f)
                                 )
@@ -245,15 +277,18 @@ fun EditScreenPreview() {
 
     MyDailyDriverTheme{
         EditContent(
-            onBack = {  },
-            title = Note().randomNote().take(maxChars),
+            onBack = { },
+            title = RndNoteTexit().randomNote().take(maxChars),
             // title = "Titel",
             // onTitelChange = ,
-            content = Note().randomNote(),
+            content = RndNoteTexit().randomNote(),
             // onContentChange = ,
             barActions = barActions,
-            bodyFocusRequester = bodyFocusRequester
-            )
+            bodyFocusRequester = bodyFocusRequester,
+            noteId = TODO(),
+            onTitelChange = TODO(),
+            onContentChange = TODO()
+        )
     }
 }
 
