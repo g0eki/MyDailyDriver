@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 
 class EditViewModel(
     private val repository: NoteRepository,
-    private val noteId: String?=null,
+    private val noteId: String? = null,
 ) : ViewModel() {
 
 
