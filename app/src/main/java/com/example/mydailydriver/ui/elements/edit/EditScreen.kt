@@ -56,8 +56,8 @@ fun EditScreen(
      */
 
     // STATT rememberSaveable:
-    var title by remember { mutableStateOf(viewModel.title) }
-    var content by remember { mutableStateOf(viewModel.content) }
+    // var title by remember { mutableStateOf(viewModel.title) }
+    // var content by remember { mutableStateOf(viewModel.content) }
     /*
     // Direkt vom ViewModel lesen:
     val title = viewModel.title        // ✅ lesen
@@ -71,8 +71,7 @@ fun EditScreen(
         ...
     )
 } */
-
-
+    val uiState by viewModel.uiState.collectAsState()
 
     /*
     TODO(): getIT von dem Aktuellen Screen, oder gleich das class ?
@@ -86,9 +85,9 @@ fun EditScreen(
             contentDescription = "Speichern",
             onClick = {
                 if(noteId == null) {
-                    viewModel.addNote(newTitel = title, newNote = content)
+                    viewModel.addNote(newTitel = uiState.title, newNote = uiState.content)
                 } else {
-                    viewModel.updateNote(id=noteId, newTitel = title, newContent = content)
+                    viewModel.updateNote(id=noteId, newTitel = uiState.title, newContent = uiState.content)
                 }
                 if (onBack != null) {
                     onBack()
@@ -129,10 +128,12 @@ fun EditScreen(
     EditContent(
         onBack = onBack,
         noteId = noteId,
-        title = title,
-        onTitelChange = { title = it },
-        content = content,
-        onContentChange = {content = it},
+        title = uiState.title,
+        onTitelChange = { newTitle -> viewModel.onTitleChange(newTitle) },
+        // Kurzschreibweise wäre: onTitelChange = { viewModel.onTitleChange(it) },
+        content = uiState.content,
+        // onContentChange = {uiState.content = it},
+        onContentChange = { newContent -> viewModel.onContentChange(newContent) },
         barActions = barActions,
         bodyFocusRequester = bodyFocusRequester,
     )
