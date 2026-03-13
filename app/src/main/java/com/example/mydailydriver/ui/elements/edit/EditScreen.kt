@@ -40,13 +40,13 @@ const val maxChars = 30
 @Composable
 // Stateful Composables:
 fun EditScreen(
-    viewModel: EditViewModel = viewModel(factory = AppViewModelProvider),
+    editViewModel: EditViewModel = viewModel(factory = AppViewModelProvider),
     onBack: (() -> Unit)? = null,
     noteId:  String?= null,
     // onEditActions: List<TopBarAction>? = null
 ) {
     // alles mit var, remember, mutableStateOf() etc. ZustazEnde ,
-    val uiState by viewModel.uiState.collectAsState()
+    val editUiState by editViewModel.uiState.collectAsState()
 
     val bodyFocusRequester = remember { FocusRequester() }
 
@@ -56,9 +56,9 @@ fun EditScreen(
             contentDescription = "Speichern",
             onClick = {
                 if(noteId == null) {
-                    viewModel.addNote(newTitel = uiState.title, newNote = uiState.content)
+                    editViewModel.addNote(newTitel = editUiState.title, newNote = editUiState.content)
                 } else {
-                    viewModel.updateNote(id=noteId, newTitel = uiState.title, newContent = uiState.content)
+                    editViewModel.updateNote(id=noteId, newTitel = editUiState.title, newContent = editUiState.content)
                 }
                 if (onBack != null) { // toDO:  onBack?.invoke()
                     onBack()
@@ -68,11 +68,11 @@ fun EditScreen(
         TopBarAction(
             // imageVector = Icons.Default.file_save,
             icon = rememberVectorPainter(
-                if(uiState.readOnly) Icons.Default.Lock else Icons.Default.LockOpen
+                if(editUiState.readOnly) Icons.Default.Lock else Icons.Default.LockOpen
             ),
-            contentDescription = if(uiState.readOnly) "Lesemodus inaktiv" else "Lesemodus aktiv",
+            contentDescription = if(editUiState.readOnly) "Lesemodus inaktiv" else "Lesemodus aktiv",
             onClick = {
-                viewModel.toogleReadMode()
+                editViewModel.toogleReadMode()
             }
         ),
 //        TopBarAction(
@@ -92,7 +92,7 @@ fun EditScreen(
             contentDescription = "Löschen",
             onClick = {
                 noteId?.let {
-                    viewModel.deleteNote(id = it)
+                    editViewModel.deleteNote(id = it)
                     if (onBack != null) {
                         onBack()
                     }
@@ -106,15 +106,15 @@ fun EditScreen(
     EditContent(
         onBack = onBack,
         noteId = noteId,
-        title = uiState.title,
-        onTitelChange = { newTitle -> viewModel.onTitleChange(newTitle) },
+        title = editUiState.title,
+        onTitelChange = { newTitle -> editViewModel.onTitleChange(newTitle) },
         // Kurzschreibweise wäre: onTitelChange = { viewModel.onTitleChange(it) },
-        content = uiState.content,
+        content = editUiState.content,
         // onContentChange = {uiState.content = it},
-        onContentChange = { newContent -> viewModel.onContentChange(newContent) },
+        onContentChange = { newContent -> editViewModel.onContentChange(newContent) },
         barActions = barActions,
         bodyFocusRequester = bodyFocusRequester,
-        readOnly = uiState.readOnly
+        readOnly = editUiState.readOnly
     )
 
 }
