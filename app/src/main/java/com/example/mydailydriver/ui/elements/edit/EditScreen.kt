@@ -1,18 +1,15 @@
 package com.example.mydailydriver.ui.elements.edit
 
-import android.R.attr.contentDescription
-import android.R.attr.onClick
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Save
-import androidx.compose.material.icons.filled.FileDownload
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.LockOpen
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -32,7 +29,6 @@ import com.example.mydailydriver.ui.elements.components.previewBarActions
 import com.example.mydailydriver.ui.theme.MyDailyDriverTheme
 import com.example.mydailydriver.R
 import com.example.mydailydriver.data.core.RndNoteTexit
-import com.example.mydailydriver.data.models.Note
 import com.example.mydailydriver.ui.AppViewModelProvider
 
 
@@ -50,32 +46,7 @@ fun EditScreen(
     // onEditActions: List<TopBarAction>? = null
 ) {
     // alles mit var, remember, mutableStateOf() etc. ZustazEnde ,
-    /*
-    var title by rememberSaveable() { mutableStateOf("") }
-    var content by rememberSaveable { mutableStateOf("") }
-     */
-
-    // STATT rememberSaveable:
-    // var title by remember { mutableStateOf(viewModel.title) }
-    // var content by remember { mutableStateOf(viewModel.content) }
-    /*
-    // Direkt vom ViewModel lesen:
-    val title = viewModel.title        // ✅ lesen
-    val content = viewModel.content    // ✅ lesen
-
-    EditContent(
-        title = title,
-        onTitelChange = { viewModel.title = it },    // ✅ ViewModel schreiben
-        content = content,
-        onContentChange = { viewModel.content = it }, // ✅ ViewModel schreiben
-        ...
-    )
-} */
     val uiState by viewModel.uiState.collectAsState()
-
-    /*
-    TODO(): getIT von dem Aktuellen Screen, oder gleich das class ?
-     */
 
     val bodyFocusRequester = remember { FocusRequester() }
 
@@ -89,39 +60,46 @@ fun EditScreen(
                 } else {
                     viewModel.updateNote(id=noteId, newTitel = uiState.title, newContent = uiState.content)
                 }
-                if (onBack != null) {
+                if (onBack != null) { // toDO:  onBack?.invoke()
                     onBack()
                 }
             }
         ),
         TopBarAction(
             // imageVector = Icons.Default.file_save,
-            icon = rememberVectorPainter(Icons.Default.FileDownload),
-            contentDescription = "FileDownload",
+            icon = rememberVectorPainter(
+                if(uiState.readOnly) Icons.Default.Lock else Icons.Default.LockOpen
+            ),
+            contentDescription = if(uiState.readOnly) "Lesemodus inaktiv" else "Lesemodus aktiv",
             onClick = {
-                /* Bearbeiten Logik */
-                // TODO()
-                Log.d("EditScreen", "Download action tapped (not implemented)")
+                viewModel.toogleReadMode()
             }
         ),
-
-        TopBarAction(
-            // icon = painterResource(id = R.drawable.baseline_delete_24),
-            icon = painterResource(id = R.drawable.ic_launcher_foreground),
-            contentDescription = "Speichern",
-            onClick = {
-                //TODO() viewModel.updateNote(id=noteId)
-            }
-        ),
-
 //        TopBarAction(
-//            icon = painterResource(id = R.drawable.outline_file_save_24),
-//            contentDescription = "Speichern",
-//            onClick = { /* Save Logik */
+//            // imageVector = Icons.Default.file_save,
+//            icon = rememberVectorPainter(Icons.Default.FileDownload),
+//            contentDescription = "FileDownload",
+//            onClick = {
+//                /* Bearbeiten Logik */
 //                // TODO()
 //                Log.d("EditScreen", "Download action tapped (not implemented)")
 //            }
 //        ),
+
+        TopBarAction(
+            icon = painterResource(id = R.drawable.baseline_delete_24),
+            // icon = painterResource(id = R.drawable.ic_launcher_foreground),
+            contentDescription = "Löschen",
+            onClick = {
+                noteId?.let {
+                    viewModel.deleteNote(id = it)
+                    if (onBack != null) {
+                        onBack()
+                    }
+                }
+                // noteId?.let(viewModel::deleteNote)
+            }
+        ),
     )
 
     // Aufruf der zustandslosen UI
@@ -136,6 +114,7 @@ fun EditScreen(
         onContentChange = { newContent -> viewModel.onContentChange(newContent) },
         barActions = barActions,
         bodyFocusRequester = bodyFocusRequester,
+        readOnly = uiState.readOnly
     )
 
 }
@@ -150,7 +129,8 @@ fun EditContent(
     content: String,
     onContentChange: (String) -> Unit = {},  // implizit ignoriert – Kurzschreibweise
     barActions: List<TopBarAction>,
-    bodyFocusRequester: FocusRequester
+    bodyFocusRequester: FocusRequester,
+    readOnly: Boolean
 ) {
     Scaffold(
         topBar = {
@@ -196,7 +176,8 @@ fun EditContent(
                             )
                         }
                         innerTextField()
-                    }
+                    },
+                    enabled = readOnly
                 )
 
                 HorizontalDivider(
@@ -229,7 +210,8 @@ fun EditContent(
                                 )
                             }
                             innerTextField()
-                        }
+                        },
+                        enabled = readOnly
                     )
                 }
 
@@ -286,9 +268,10 @@ fun EditScreenPreview() {
             // onContentChange = ,
             barActions = barActions,
             bodyFocusRequester = bodyFocusRequester,
-            noteId = TODO(),
-            onTitelChange = TODO(),
-            onContentChange = TODO()
+            noteId = "",
+            onTitelChange = { },
+            onContentChange = { },
+            readOnly = false
         )
     }
 }

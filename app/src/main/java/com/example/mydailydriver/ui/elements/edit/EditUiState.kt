@@ -3,7 +3,7 @@ package com.example.mydailydriver.ui.elements.edit
 data class EditUiState(
     val title: String = "",
     val content: String = "",
-    val isLoading: Boolean = true
+    val readOnly: Boolean = false // ODer direkt veränderbar ?
 )
 /*
 toDO():

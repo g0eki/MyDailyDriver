@@ -1,10 +1,6 @@
 package com.example.mydailydriver.ui.elements.edit
 
-import android.app.Application
 import android.util.Log
-import androidx.compose.runtime.*
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mydailydriver.data.repository.NoteRepository
@@ -37,13 +33,13 @@ class EditViewModel(
                         currentState.copy(
                             title = note.title,
                             content = note.content,
-                            isLoading = false
+                            readOnly = false
                         )
                     }
-                } else {
+                } /* else {
                     // KORREKT: _uiState verwenden
-                    _uiState.update { it.copy(isLoading = false) }
-                }
+                    _uiState.update { it.copy(readOnly = false) }
+                } */
 
             }
         }
@@ -57,6 +53,11 @@ class EditViewModel(
     fun onContentChange(newContent: String) {
         _uiState.update { it.copy(content = newContent) }
     }
+
+    fun toogleReadMode() {
+        _uiState.update { it.copy(readOnly = !it.readOnly) }
+    }
+
     // -----------------------------------------------
 
 
