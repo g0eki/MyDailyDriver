@@ -23,6 +23,7 @@ import com.example.mydailydriver.ui.elements.components.Screens
 import com.example.mydailydriver.ui.elements.home.HomeScreen
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.toRoute
+import com.example.mydailydriver.ui.elements.components.NotesGroups
 
 
 // 1. Kein @Composable hier!
@@ -98,6 +99,8 @@ internal class NavigationHelper(
                 onEditNote = { note ->
                     navController.navigate(route = EditNote(noteId = note.id))
                 },
+                // onAddNoteGroup = { TODO() },
+                // onAddNoteGroup = TODO(), // { navController.navigate(route = EditNoteGroup()) },
             )
         }
 
@@ -125,6 +128,10 @@ internal class NavigationHelper(
                 noteId = editNote.noteId
                 // onEditActions = barActions,
             )
+        }
+        composable< NotesGroups> {
+            TODO()
+
         }
     }
 }

@@ -17,3 +17,7 @@ object Home
 
 @Serializable
 data class EditNote(val noteId: String? = null)
+@Serializable
+data class NotesGroups(val groupId: String? = null)
+
+//

@@ -1,6 +1,7 @@
 package com.example.mydailydriver.data.repository
 
 import com.example.mydailydriver.data.models.Note
+import com.example.mydailydriver.data.models.NoteGroup
 import kotlinx.coroutines.flow.Flow
 
 interface NoteRepository {
@@ -13,6 +14,11 @@ interface NoteRepository {
     suspend fun getNoteById(id: String): Note?  // toDO(): Wenn man Room verwendet, kann drauf verzichten ?
 
     // Hier könnten später auch Gruppen-Funktionen hin:
-    // suspend fun addNoteToGroup(groupId: String, note: Note)
+    val allNoteGroups: Flow<List<NoteGroup>>
+    suspend fun addNoteToGroup(name: String, description: String)
+    suspend fun deleteNoteGroup(id: String)
+    suspend fun updateNoteGroup(id: String, note: Note)
+    suspend fun getNoteGroupById(id: String): NoteGroup?
+
 
 }

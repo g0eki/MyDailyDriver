@@ -68,9 +68,9 @@ fun EditScreen(
         TopBarAction(
             // imageVector = Icons.Default.file_save,
             icon = rememberVectorPainter(
-                if(editUiState.readOnly) Icons.Default.Lock else Icons.Default.LockOpen
+                if(!editUiState.readOnly) Icons.Default.Lock else Icons.Default.LockOpen
             ),
-            contentDescription = if(editUiState.readOnly) "Lesemodus inaktiv" else "Lesemodus aktiv",
+            contentDescription = if(!editUiState.readOnly) "Lesemodus inaktiv" else "Lesemodus aktiv",
             onClick = {
                 editViewModel.toogleReadMode()
             }
@@ -177,7 +177,7 @@ fun EditContent(
                         }
                         innerTextField()
                     },
-                    enabled = readOnly
+                    enabled = !readOnly
                 )
 
                 HorizontalDivider(
@@ -211,7 +211,7 @@ fun EditContent(
                             }
                             innerTextField()
                         },
-                        enabled = readOnly
+                        enabled = !readOnly
                     )
                 }
 

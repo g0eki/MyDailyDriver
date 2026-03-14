@@ -20,6 +20,8 @@ val AppViewModelProvider = viewModelFactory {
         HomeViewModel(repository = app.repository) // Holt das globale Repo
     }
 
+    // Bauanleitung fürs Group-Screen
+
     // Bauanleitung fürs EditViewModel
     initializer {
         val app = this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as MyDailyDriverApplication
