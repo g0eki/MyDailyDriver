@@ -19,18 +19,18 @@ import androidx.navigation.compose.composable
 import com.example.mydailydriver.ui.elements.components.EditNote
 import com.example.mydailydriver.ui.elements.components.Home
 import com.example.mydailydriver.ui.elements.edit.EditScreen
-import com.example.mydailydriver.ui.elements.components.Screens
 import com.example.mydailydriver.ui.elements.home.HomeScreen
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.toRoute
 import com.example.mydailydriver.ui.elements.components.NotesGroups
+import com.example.mydailydriver.ui.elements.group.GroupScreen
 
 
 // 1. Kein @Composable hier!
 internal class NavigationHelper(
     val navController: NavController
 ) {
-    @Composable
+/*    @Composable
     fun ModalDrawerSheetContent() {
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -66,7 +66,7 @@ internal class NavigationHelper(
             selected = false,
             onClick = { navController.navigate(Screens.Notes.name) }
         )
-    }
+    }*/
 
 /*    fun NavGraphBuilder.navHostContent() {
         composable(route = Screens.Start.name) {
@@ -92,6 +92,18 @@ internal class NavigationHelper(
     }*/
 
     fun NavGraphBuilder.navHostContent() {
+/*        composable<Home> {
+            HomeScreen(
+                onNavigateHome = { navController.navigate(route = Home) },
+                onAddNote = { navController.navigate(route = EditNote()) },
+                onEditNote = { note ->
+                    navController.navigate(route = EditNote(noteId = note.id))
+                },
+                onAddNoteGroup = {navController.navigate(route = NotesGroups())},
+                // onAddNoteGroup = TODO(), // { navController.navigate(route = EditNoteGroup()) },
+            )
+        }*/
+
         composable<Home> {
             HomeScreen(
                 onNavigateHome = { navController.navigate(route = Home) },
@@ -99,8 +111,12 @@ internal class NavigationHelper(
                 onEditNote = { note ->
                     navController.navigate(route = EditNote(noteId = note.id))
                 },
-                // onAddNoteGroup = { TODO() },
-                // onAddNoteGroup = TODO(), // { navController.navigate(route = EditNoteGroup()) },
+                onAddNoteGroup = {
+                    // TODO: Dialog in HomeScreen öffnen
+                },
+                onSelectGroup = { group ->
+                    navController.navigate(route = NotesGroups(groupId = group.id))  // ✅
+                }
             )
         }
 
@@ -129,9 +145,15 @@ internal class NavigationHelper(
                 // onEditActions = barActions,
             )
         }
-        composable< NotesGroups> {
-            TODO()
-
+        composable<NotesGroups> {
+            val notesGroups = it.toRoute<NotesGroups>()
+            GroupScreen(
+                groupId = notesGroups.groupId,  // ✅ immer vorhanden!
+                onBack = { navController.popBackStack() },
+                onEditNote = { note ->
+                    navController.navigate(route = EditNote(noteId = note.id))
+                }
+            )
         }
     }
 }

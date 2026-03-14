@@ -10,6 +10,7 @@ import com.example.mydailydriver.ui.elements.home.HomeViewModel
 import com.example.mydailydriver.ui.elements.edit.EditViewModel // (Dein anderes ViewModel)
 import com.example.mydailydriver.ui.elements.components.EditNote
 import androidx.navigation.toRoute
+import com.example.mydailydriver.ui.elements.group.GroupViewModel
 
 // EINE Fabrik für alle ViewModels der App
 val AppViewModelProvider = viewModelFactory {
@@ -21,6 +22,15 @@ val AppViewModelProvider = viewModelFactory {
     }
 
     // Bauanleitung fürs Group-Screen
+    initializer {
+        val app = this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as MyDailyDriverApplication
+        val savedStateHandle = createSavedStateHandle()
+        val groupId = savedStateHandle.get<String>("groupId") ?: ""  // ✅
+        GroupViewModel(
+            repository = app.repository,
+            groupId = groupId
+        )
+    }
 
     // Bauanleitung fürs EditViewModel
     initializer {

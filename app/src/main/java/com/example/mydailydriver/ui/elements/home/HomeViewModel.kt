@@ -7,6 +7,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.mydailydriver.data.models.Note
 import com.example.mydailydriver.data.datastore.NotesStore
+import com.example.mydailydriver.data.models.NoteGroup
 import com.example.mydailydriver.data.repository.NoteRepository
 import com.example.mydailydriver.data.repository.NoteRepositoryImpl
 import kotlinx.coroutines.flow.Flow
@@ -29,6 +30,7 @@ class HomeViewModel(
     // Sobald sich in der Datenbank etwas ändert, wird dieser Flow automatisch aktualisiert
     // und die UI zeichnet sich neu.
     val notes: Flow<List<Note>> = repository.allNotes
+    val noteGroups: Flow<List<NoteGroup>> = repository.allNoteGroups
 
     // Funktion zum Hinzufügen einer Notiz.
     // Wir nutzen den viewModelScope, weil Datenbank-Operationen asynchron (suspend)

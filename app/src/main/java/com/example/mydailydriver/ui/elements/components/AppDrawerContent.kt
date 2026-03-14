@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Apps
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.HorizontalDivider
@@ -20,11 +21,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mydailydriver.R
+import com.example.mydailydriver.data.models.NoteGroup
 
 @Composable
 fun AppDrawerContent(
     onNavigateHome: () -> Unit = {},
-    onAddNote: () -> Unit,
+    onAddNotesGroups: () -> Unit,
+    noteGroups: List<NoteGroup> = emptyList(),
+    onSelectGroup: (NoteGroup) -> Unit = {},
 ){
     ModalDrawerSheet(
         drawerContainerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -52,16 +56,30 @@ fun AppDrawerContent(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = "Meine Notizen (Group)",
+            text = "Meine Gruppen",
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(horizontal = 16.dp)
         )
         NavigationDrawerItem(
             icon = { Icon(Icons.Default.Edit, contentDescription = null) },
-            label = { Text("Neue Notiz") },
+            label = { Text("Neue Gruppe") },
             selected = false,
-            onClick = { onAddNote() }
+            onClick = { onAddNotesGroups() }
         )
+
+        if(!noteGroups.isEmpty()) {
+            HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+            Spacer(modifier = Modifier.height(16.dp))
+            noteGroups.forEach { group ->
+                NavigationDrawerItem(
+                    icon = { Icon(Icons.Default.Apps, contentDescription = null) },
+                    label = { Text(group.name) },
+                    selected = false,
+                    onClick = { onSelectGroup(group)  } // TODO: Die Gruppe öfnnen
+                )
+            }
+        }
+
     }
 }

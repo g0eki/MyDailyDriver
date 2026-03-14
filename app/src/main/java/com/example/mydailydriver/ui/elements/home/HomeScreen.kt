@@ -1,34 +1,19 @@
 package com.example.mydailydriver.ui.elements.home
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.collectAsState
 import com.example.mydailydriver.data.models.Note
 import com.example.mydailydriver.ui.theme.MyDailyDriverTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.mydailydriver.R
 import com.example.mydailydriver.data.models.NoteGroup
 import com.example.mydailydriver.ui.AppViewModelProvider
 import com.example.mydailydriver.ui.elements.components.AppDrawerContent
 import com.example.mydailydriver.ui.elements.components.AppScaffold
 import com.example.mydailydriver.ui.elements.components.CustomTopBar
-import com.example.mydailydriver.ui.elements.components.NoteItem
 import kotlinx.coroutines.launch
 
 
@@ -43,15 +28,22 @@ fun HomeScreen(
     viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider),
     onNavigateHome: () -> Unit = {},
     onAddNote: () -> Unit,
-    onEditNote: (Note) -> Unit = {},  // NEU
-    // onAddNoteGroup: Nothing = TODO(),  // NEU
+    onEditNote: (Note) -> Unit = {},
+    onAddNoteGroup: () -> Unit,
+    onSelectGroup: (NoteGroup) -> Unit = {},  // ✅ NEU
 ) {
     val notes by viewModel.notes.collectAsState(initial = emptyList())
+    val noteGroups by viewModel.noteGroups.collectAsState(initial = emptyList())
+
+
     HomeContent(
         notes = notes,
+        noteGroups = noteGroups,  // ✅ NEU
         onNavigateHome = onNavigateHome,
         onAddNote = onAddNote,
         onEditNote = onEditNote,
+        onAddNoteGroup = onAddNoteGroup,
+        onSelectGroup = onSelectGroup,  // ✅ NEU
     )
 }
 
@@ -60,19 +52,14 @@ fun HomeScreen(
 @Composable
 fun HomeContent(
     notes: List<Note>,
+    noteGroups: List<NoteGroup> = emptyList(),  // ✅ NEU
     onNavigateHome: () -> Unit = {},
     onAddNote: () -> Unit,
-    onEditNote: (Note) -> Unit = {}, // ✅
-    ) {
+    onEditNote: (Note) -> Unit = {},
+    onAddNoteGroup: () -> Unit = {},
+    onSelectGroup: (NoteGroup) -> Unit = {},  // ✅ NEU
+) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
-
-    /*
-    fun HomeContent(
-    notes: List<Note>,
-    onAddNote: () -> Unit,
-    onNavigateToNotes: () -> Unit = {},
-    onNavigateHome: () -> Unit = {}
-     */
 
     // Falls du den Drawer per Button öffnen willst, brauchst du ein CoroutineScope
     // TODO() val scope = rememberCoroutineScope()
@@ -82,8 +69,10 @@ fun HomeContent(
         drawerState = drawerState,
         drawerContent = {
             AppDrawerContent(
-                onNavigateHome=onNavigateHome,
-                onAddNote=onAddNote
+                onNavigateHome = onNavigateHome,
+                onAddNotesGroups = onAddNoteGroup,
+                noteGroups = noteGroups,          // ✅
+                onSelectGroup = onSelectGroup     // ✅
             )
         },
         // modifier = TODO(),
@@ -91,8 +80,35 @@ fun HomeContent(
         // scrimColor = TODO(),
     ) {
         //toDO: All-in-One:
-        //toDO: Partiel:
         AppScaffold(
+            topBar = {
+                CustomTopBar(
+                    titel = "My Daily Driver",
+                    onMenuClick={
+                        scope.launch {
+                            // Öffnet den Drawer, falls zu, schließt ihn, falls offen
+                            if (drawerState.isClosed) drawerState.open() else drawerState.close()
+
+                            // ODER alternativ, falls du nur öffnen willst:
+                            // drawerState.apply { if (isClosed) open() else close() }
+                        }
+                    }
+                )
+            },
+            floatingActionButton = {
+                FloatingActionButton(onClick = onAddNote) {
+                    Icon(
+                        Icons.Filled.Add,
+                        "Notiz hinzufügen"
+                    )
+                }
+            },
+            notes = notes,
+            onEditNote = onEditNote,
+        )
+
+        //toDO: Partiel:
+/*        AppScaffold(
             topBar = {
                 CustomTopBar(
                     titel = "My Daily Driver",
@@ -155,7 +171,7 @@ fun HomeContent(
                     }
                 }
             }
-        }
+        }*/
         //toDO: alter-Variante:
         /*
         Scaffold(
@@ -238,7 +254,9 @@ fun HomeScreenPreview() {
                 Note(title = "Einkauf", content = "Milch, Brot, Eier"),
                 Note(title = "Meeting", content = "Montag 10 Uhr")
             ),
-            onAddNote = {}
+            onAddNote = {},
+            onEditNote = {},
+            onAddNoteGroup = {},
         )
     }
 }
@@ -249,7 +267,9 @@ fun HomeScreenEmptyPreview() {
     MyDailyDriverTheme {
         HomeContent(
             notes = emptyList(),
-            onAddNote = {}
+            onAddNote = {},
+            onEditNote = {},
+            onAddNoteGroup = {},
         )  // ← Empty State testen!
     }
 }

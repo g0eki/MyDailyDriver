@@ -11,7 +11,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.example.mydailydriver.ui.elements.components.Home
-import com.example.mydailydriver.ui.elements.components.Screens
 
 @Composable
 fun Navigation(
